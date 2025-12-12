@@ -1,0 +1,190 @@
+{
+  "common": {
+    "appName": "MigrAlert",
+    "loading": "Cargando...",
+    "error": "Ocurrio un error",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Atras",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "share": "Compartir",
+    "settings": "Configuracion",
+    "help": "Ayuda",
+    "logout": "Cerrar sesion",
+    "login": "Iniciar sesion",
+    "signup": "Registrarse"
+  },
+  "nav": {
+    "map": "Mapa",
+    "report": "Reportar",
+    "alerts": "Alertas",
+    "profile": "Perfil"
+  },
+  "map": {
+    "title": "Reportes Activos",
+    "noReports": "No hay reportes activos en tu area",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "myLocation": "Mi ubicacion",
+    "refreshing": "Actualizando...",
+    "lastUpdated": "Ultima actualizacion {time}",
+    "reportsNearby": "{count, plural, =0 {Sin reportes} =1 {1 reporte} other {# reportes}} cercanos"
+  },
+  "report": {
+    "title": "Enviar Reporte",
+    "subtitle": "Ayuda a mantener segura a tu comunidad",
+    "activityType": "Tipo de Actividad",
+    "types": {
+      "checkpoint": "Punto de control",
+      "raid": "Redada",
+      "patrol": "Patrulla",
+      "detention": "Detencion",
+      "other": "Otro"
+    },
+    "description": "Descripcion (opcional)",
+    "descriptionPlaceholder": "Proporciona detalles adicionales sobre lo que observaste...",
+    "photo": "Evidencia Fotografica",
+    "photoRequired": "Se requiere una foto para verificar este reporte",
+    "takePhoto": "Tomar Foto",
+    "uploadPhoto": "Subir Foto",
+    "location": "Ubicacion",
+    "locationDetected": "Ubicacion detectada",
+    "locationFailed": "No se pudo detectar la ubicacion",
+    "enableLocation": "Habilitar servicios de ubicacion",
+    "submitting": "Enviando reporte...",
+    "success": "Reporte enviado exitosamente",
+    "successMessage": "Tu reporte esta pendiente de verificacion por un moderador",
+    "error": "Error al enviar el reporte"
+  },
+  "reportCard": {
+    "verified": "Verificado",
+    "pending": "Pendiente de Verificacion",
+    "hoursAgo": "hace {hours}h",
+    "minutesAgo": "hace {minutes}m",
+    "justNow": "Justo ahora",
+    "distance": "a {distance} mi",
+    "confidence": {
+      "high": "Alta confianza",
+      "medium": "Confianza media",
+      "low": "Baja confianza"
+    },
+    "confirmReport": "Lo veo",
+    "markInactive": "Ya no esta activo",
+    "markFalse": "Reporte falso"
+  },
+  "alerts": {
+    "title": "Alertas de Emergencia",
+    "subtitle": "Configura tus contactos de emergencia y mensaje de alerta",
+    "contacts": {
+      "title": "Contactos de Emergencia",
+      "subtitle": "Hasta 5 contactos seran notificados si activas una alerta",
+      "add": "Agregar Contacto",
+      "name": "Nombre",
+      "phone": "Numero de Telefono",
+      "relationship": "Relacion (opcional)",
+      "empty": "No hay contactos de emergencia agregados"
+    },
+    "message": {
+      "title": "Mensaje de Alerta",
+      "subtitle": "Este mensaje sera enviado a tus contactos",
+      "templates": {
+        "title": "Plantillas de Mensaje",
+        "default": "Es posible que haya sido detenido por autoridades de inmigracion. Por favor contacta a un abogado inmediatamente. Mi ultima ubicacion conocida esta compartida abajo.",
+        "family": "Emergencia: Necesito ayuda. Las autoridades de inmigracion pueden haberme detenido. Por favor verificame y contacta a nuestro abogado familiar.",
+        "legal": "URGENTE: Estoy siendo detenido por autoridades de inmigracion. Por favor contacta a mi abogado de inmigracion designado y a mi familia inmediatamente."
+      },
+      "custom": "Escribe tu propio mensaje",
+      "customPlaceholder": "Escribe un mensaje que tus contactos reconoceran que es tuyo..."
+    },
+    "shareLocation": {
+      "title": "Compartir Ubicacion",
+      "description": "Incluir tu ultima ubicacion conocida en la alerta"
+    },
+    "panicButton": {
+      "title": "Alerta de Emergencia",
+      "description": "Mantén presionado para enviar una alerta a todos tus contactos de emergencia",
+      "hold": "Mantén presionado 3 segundos",
+      "sending": "Enviando alerta...",
+      "sent": "Alerta enviada",
+      "failed": "Error al enviar alerta"
+    }
+  },
+  "auth": {
+    "welcome": "Bienvenido a MigrAlert",
+    "tagline": "Alertas de seguridad impulsadas por la comunidad",
+    "continueAnonymous": "Continuar sin cuenta",
+    "anonymousNote": "Puedes ver reportes y enviar alertas de forma anonima",
+    "createAccount": "Crear Cuenta",
+    "createAccountNote": "Guarda contactos de emergencia y conecta con familia",
+    "email": "Correo electronico",
+    "password": "Contrasena",
+    "confirmPassword": "Confirmar Contrasena",
+    "forgotPassword": "Olvidaste tu contrasena?",
+    "alreadyHaveAccount": "Ya tienes una cuenta?",
+    "noAccount": "No tienes una cuenta?"
+  },
+  "settings": {
+    "title": "Configuracion",
+    "language": {
+      "title": "Idioma",
+      "description": "Elige tu idioma preferido"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "push": "Notificaciones Push",
+      "pushDescription": "Recibe alertas de actividad cercana",
+      "radius": "Radio de Alerta",
+      "radiusDescription": "Recibe notificaciones de reportes dentro de esta distancia"
+    },
+    "privacy": {
+      "title": "Privacidad",
+      "description": "Tu privacidad es nuestra prioridad",
+      "dataInfo": "Recopilamos datos minimos y nunca rastreamos tu ubicacion"
+    },
+    "about": {
+      "title": "Acerca de",
+      "version": "Version",
+      "legal": "Recursos Legales",
+      "rights": "Conoce Tus Derechos"
+    },
+    "danger": {
+      "title": "Zona de Peligro",
+      "deleteAccount": "Eliminar Cuenta",
+      "deleteWarning": "Esta accion no se puede deshacer"
+    }
+  },
+  "moderation": {
+    "title": "Panel de Moderacion",
+    "pendingReports": "Reportes Pendientes",
+    "noReports": "No hay reportes pendientes de verificacion",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "reportDetails": "Detalles del Reporte",
+    "submittedAt": "Enviado a las",
+    "locationMatch": "Ubicacion Coincide",
+    "locationMismatch": "La ubicacion no coincide con el area indicada"
+  },
+  "errors": {
+    "generic": "Algo salio mal. Por favor intenta de nuevo.",
+    "network": "Error de red. Por favor verifica tu conexion.",
+    "unauthorized": "Necesitas iniciar sesion para hacer esto.",
+    "notFound": "El recurso solicitado no fue encontrado.",
+    "locationDenied": "El acceso a la ubicacion fue denegado. Por favor habilita los servicios de ubicacion.",
+    "cameraDenied": "El acceso a la camara fue denegado. Por favor habilita los permisos de camara."
+  },
+  "accessibility": {
+    "menu": "Abrir menu",
+    "closeMenu": "Cerrar menu",
+    "mapMarker": "Marcador de reporte para actividad de {type}",
+    "confidenceIndicator": "Nivel de confianza {level}",
+    "languageSelector": "Seleccionar idioma"
+  }
+}

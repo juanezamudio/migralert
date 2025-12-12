@@ -1,0 +1,190 @@
+{
+  "common": {
+    "appName": "MigrAlert",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "share": "Share",
+    "settings": "Settings",
+    "help": "Help",
+    "logout": "Log out",
+    "login": "Log in",
+    "signup": "Sign up"
+  },
+  "nav": {
+    "map": "Map",
+    "report": "Report",
+    "alerts": "Alerts",
+    "profile": "Profile"
+  },
+  "map": {
+    "title": "Active Reports",
+    "noReports": "No active reports in your area",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "myLocation": "My location",
+    "refreshing": "Refreshing...",
+    "lastUpdated": "Last updated {time}",
+    "reportsNearby": "{count, plural, =0 {No reports} =1 {1 report} other {# reports}} nearby"
+  },
+  "report": {
+    "title": "Submit Report",
+    "subtitle": "Help keep your community safe",
+    "activityType": "Type of Activity",
+    "types": {
+      "checkpoint": "Checkpoint",
+      "raid": "Raid",
+      "patrol": "Patrol",
+      "detention": "Detention",
+      "other": "Other"
+    },
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "Provide additional details about what you observed...",
+    "photo": "Photo Evidence",
+    "photoRequired": "A photo is required to verify this report",
+    "takePhoto": "Take Photo",
+    "uploadPhoto": "Upload Photo",
+    "location": "Location",
+    "locationDetected": "Location detected",
+    "locationFailed": "Could not detect location",
+    "enableLocation": "Enable location services",
+    "submitting": "Submitting report...",
+    "success": "Report submitted successfully",
+    "successMessage": "Your report is pending verification by a moderator",
+    "error": "Failed to submit report"
+  },
+  "reportCard": {
+    "verified": "Verified",
+    "pending": "Pending Verification",
+    "hoursAgo": "{hours}h ago",
+    "minutesAgo": "{minutes}m ago",
+    "justNow": "Just now",
+    "distance": "{distance} mi away",
+    "confidence": {
+      "high": "High confidence",
+      "medium": "Medium confidence",
+      "low": "Low confidence"
+    },
+    "confirmReport": "I see this",
+    "markInactive": "No longer active",
+    "markFalse": "False report"
+  },
+  "alerts": {
+    "title": "Emergency Alerts",
+    "subtitle": "Set up your emergency contacts and alert message",
+    "contacts": {
+      "title": "Emergency Contacts",
+      "subtitle": "Up to 5 contacts will be notified if you trigger an alert",
+      "add": "Add Contact",
+      "name": "Name",
+      "phone": "Phone Number",
+      "relationship": "Relationship (optional)",
+      "empty": "No emergency contacts added yet"
+    },
+    "message": {
+      "title": "Alert Message",
+      "subtitle": "This message will be sent to your contacts",
+      "templates": {
+        "title": "Message Templates",
+        "default": "I may have been detained by immigration authorities. Please contact a lawyer immediately. My last known location is shared below.",
+        "family": "Emergency: I need help. Immigration authorities may have detained me. Please check on me and contact our family lawyer.",
+        "legal": "URGENT: I am being detained by immigration enforcement. Please contact my designated immigration attorney and family immediately."
+      },
+      "custom": "Write your own message",
+      "customPlaceholder": "Write a message your contacts will recognize is from you..."
+    },
+    "shareLocation": {
+      "title": "Share Location",
+      "description": "Include your last known location in the alert"
+    },
+    "panicButton": {
+      "title": "Emergency Alert",
+      "description": "Tap and hold to send an alert to all your emergency contacts",
+      "hold": "Hold for 3 seconds",
+      "sending": "Sending alert...",
+      "sent": "Alert sent",
+      "failed": "Failed to send alert"
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to MigrAlert",
+    "tagline": "Community-powered safety alerts",
+    "continueAnonymous": "Continue without account",
+    "anonymousNote": "You can view reports and submit alerts anonymously",
+    "createAccount": "Create Account",
+    "createAccountNote": "Save emergency contacts and connect with family",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "alreadyHaveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Language",
+      "description": "Choose your preferred language"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "push": "Push Notifications",
+      "pushDescription": "Get alerts for nearby activity",
+      "radius": "Alert Radius",
+      "radiusDescription": "Get notified for reports within this distance"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "description": "Your privacy is our priority",
+      "dataInfo": "We collect minimal data and never track your location"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "legal": "Legal Resources",
+      "rights": "Know Your Rights"
+    },
+    "danger": {
+      "title": "Danger Zone",
+      "deleteAccount": "Delete Account",
+      "deleteWarning": "This action cannot be undone"
+    }
+  },
+  "moderation": {
+    "title": "Moderation Dashboard",
+    "pendingReports": "Pending Reports",
+    "noReports": "No reports pending verification",
+    "approve": "Approve",
+    "reject": "Reject",
+    "reportDetails": "Report Details",
+    "submittedAt": "Submitted at",
+    "locationMatch": "Location Match",
+    "locationMismatch": "Location does not match claimed area"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You need to be logged in to do this.",
+    "notFound": "The requested resource was not found.",
+    "locationDenied": "Location access was denied. Please enable location services.",
+    "cameraDenied": "Camera access was denied. Please enable camera permissions."
+  },
+  "accessibility": {
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "mapMarker": "Report marker for {type} activity",
+    "confidenceIndicator": "{level} confidence level",
+    "languageSelector": "Select language"
+  }
+}

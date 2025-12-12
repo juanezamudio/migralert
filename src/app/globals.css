@@ -1,26 +1,207 @@
 @import "tailwindcss";
 
+/* MigrAlert Dark Theme - Citizen-inspired */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core colors - dark mode only */
+  --background: #0D0D0F;
+  --background-secondary: #16161A;
+  --background-tertiary: #1E1E24;
+
+  /* Surface colors for cards, modals */
+  --surface: #1A1A1F;
+  --surface-hover: #242429;
+  --surface-active: #2A2A30;
+
+  /* Border colors */
+  --border: #2A2A30;
+  --border-light: #3A3A42;
+
+  /* Text colors */
+  --foreground: #FAFAFA;
+  --foreground-secondary: #A0A0A8;
+  --foreground-muted: #6B6B73;
+
+  /* Accent colors */
+  --accent-primary: #FF6B35;
+  --accent-primary-hover: #FF8255;
+  --accent-primary-muted: rgba(255, 107, 53, 0.15);
+
+  /* Status colors */
+  --status-danger: #EF4444;
+  --status-danger-muted: rgba(239, 68, 68, 0.15);
+  --status-warning: #F59E0B;
+  --status-warning-muted: rgba(245, 158, 11, 0.15);
+  --status-success: #10B981;
+  --status-success-muted: rgba(16, 185, 129, 0.15);
+  --status-info: #3B82F6;
+  --status-info-muted: rgba(59, 130, 246, 0.15);
+
+  /* Confidence score colors */
+  --confidence-high: #10B981;
+  --confidence-medium: #F59E0B;
+  --confidence-low: #EF4444;
+  --confidence-pending: #6B6B73;
+
+  /* Map-specific */
+  --map-overlay: rgba(13, 13, 15, 0.85);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-hover: var(--accent-primary-hover);
+  --color-accent-primary-muted: var(--accent-primary-muted);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-muted: var(--status-danger-muted);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-muted: var(--status-warning-muted);
+  --color-status-success: var(--status-success);
+  --color-status-success-muted: var(--status-success-muted);
+  --color-status-info: var(--status-info);
+  --color-status-info-muted: var(--status-info-muted);
+  --color-confidence-high: var(--confidence-high);
+  --color-confidence-medium: var(--confidence-medium);
+  --color-confidence-low: var(--confidence-low);
+  --color-confidence-pending: var(--confidence-pending);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility - Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
+/* Selection styling */
+::selection {
+  background: var(--accent-primary-muted);
+  color: var(--foreground);
+}
+
+/* Mapbox overrides for dark theme */
+.mapboxgl-popup-content {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 0 !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--surface) !important;
+}
+
+.mapboxgl-ctrl-group {
+  background: var(--surface) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.mapboxgl-ctrl-group button {
+  background: transparent !important;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background: var(--surface-hover) !important;
+}
+
+/* Safe area insets for mobile */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-pulse-subtle {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

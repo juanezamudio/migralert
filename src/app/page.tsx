@@ -88,7 +88,8 @@ export default function HomePage() {
     other: "📍",
   };
 
-  const isLoading = locationLoading || reportsLoading;
+  // Only show loading for reports, not location - map works without user location
+  const isLoading = reportsLoading && !reports.length;
 
   return (
     <div className="min-h-screen bg-background">

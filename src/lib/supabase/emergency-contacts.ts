@@ -194,14 +194,43 @@ export async function getAlertConfig(): Promise<{
     return { data: null, error: "Not authenticated" };
   }
 
-  const { data, error } = await supabase
-    .from("alert_config")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("alert_config")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
 
-  // If no config exists, return default
-  if (error?.code === "PGRST116") {
+    // If no config exists or table doesn't exist, return default
+    if (error?.code === "PGRST116" || error?.code === "42P01" || error?.message?.includes("406")) {
+      return {
+        data: {
+          user_id: user.id,
+          message: "I may have been detained by immigration authorities. Please contact a lawyer immediately.",
+          share_location: true,
+          updated_at: new Date().toISOString(),
+        },
+        error: null,
+      };
+    }
+
+    if (error) {
+      // For any other error, return default config instead of failing
+      console.warn("Error fetching alert config, using defaults:", error);
+      return {
+        data: {
+          user_id: user.id,
+          message: "I may have been detained by immigration authorities. Please contact a lawyer immediately.",
+          share_location: true,
+          updated_at: new Date().toISOString(),
+        },
+        error: null,
+      };
+    }
+
+    return { data, error: null };
+  } catch {
+    // Return default config on any error
     return {
       data: {
         user_id: user.id,
@@ -212,12 +241,6 @@ export async function getAlertConfig(): Promise<{
       error: null,
     };
   }
-
-  if (error) {
-    return { data: null, error: error.message };
-  }
-
-  return { data, error: null };
 }
 
 /**
@@ -263,18 +286,24 @@ export async function getAlertHistory(limit: number = 10): Promise<{
     return { data: null, error: "Not authenticated" };
   }
 
-  const { data, error } = await supabase
-    .from("alert_history")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(limit);
+  try {
+    const { data, error } = await supabase
+      .from("alert_history")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(limit);
 
-  if (error) {
-    return { data: null, error: error.message };
+    if (error) {
+      // If table doesn't exist, return empty array
+      console.warn("Error fetching alert history:", error);
+      return { data: [], error: null };
+    }
+
+    return { data: data || [], error: null };
+  } catch {
+    return { data: [], error: null };
   }
-
-  return { data: data || [], error: null };
 }
 
 /**

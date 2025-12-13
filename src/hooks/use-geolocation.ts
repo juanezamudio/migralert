@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { GeoLocation } from "@/types";
 
 interface GeolocationState {
@@ -15,12 +15,6 @@ interface UseGeolocationOptions {
   maximumAge?: number;
 }
 
-const defaultOptions: UseGeolocationOptions = {
-  enableHighAccuracy: true,
-  timeout: 10000,
-  maximumAge: 60000, // Cache location for 1 minute
-};
-
 export function useGeolocation(options: UseGeolocationOptions = {}) {
   const [state, setState] = useState<GeolocationState>({
     location: null,
@@ -28,10 +22,18 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     loading: true,
   });
 
-  const opts = { ...defaultOptions, ...options };
+  // Use refs to avoid recreating the callback on every render
+  const optionsRef = useRef({
+    enableHighAccuracy: options.enableHighAccuracy ?? true,
+    timeout: options.timeout ?? 10000,
+    maximumAge: options.maximumAge ?? 60000,
+  });
+
+  // Track if we've already attempted to get location
+  const hasAttemptedRef = useRef(false);
 
   const getLocation = useCallback(() => {
-    if (!navigator.geolocation) {
+    if (typeof window === "undefined" || !navigator.geolocation) {
       setState({
         location: null,
         error: "Geolocation is not supported by your browser",
@@ -67,22 +69,22 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
             errorMessage = "Location request timed out";
             break;
         }
-        setState({
-          location: null,
+        setState((prev) => ({
+          location: prev.location, // Keep previous location if we had one
           error: errorMessage,
           loading: false,
-        });
+        }));
       },
-      {
-        enableHighAccuracy: opts.enableHighAccuracy,
-        timeout: opts.timeout,
-        maximumAge: opts.maximumAge,
-      }
+      optionsRef.current
     );
-  }, [opts.enableHighAccuracy, opts.timeout, opts.maximumAge]);
+  }, []);
 
+  // Only request location once on mount
   useEffect(() => {
-    getLocation();
+    if (!hasAttemptedRef.current) {
+      hasAttemptedRef.current = true;
+      getLocation();
+    }
   }, [getLocation]);
 
   return {

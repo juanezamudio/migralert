@@ -26,7 +26,7 @@ function Header({
       className={cn(
         "fixed top-0 inset-x-0 z-30 safe-area-top",
         transparent
-          ? "bg-transparent"
+          ? "bg-transparent pt-4"
           : "bg-background-secondary/95 backdrop-blur-md border-b border-border"
       )}
     >
@@ -37,7 +37,14 @@ function Header({
 
         <div className="flex-1 text-center">
           {title && (
-            <h1 className="text-lg font-semibold text-foreground truncate">
+            <h1
+              className={cn(
+                "text-lg font-semibold font-display tracking-tight truncate",
+                transparent
+                  ? "inline-block px-4 py-1.5 rounded-full bg-[#1a1a1f]/90 backdrop-blur-md border border-[#2a2a30] text-foreground shadow-lg"
+                  : "text-foreground"
+              )}
+            >
               {title}
             </h1>
           )}
@@ -47,7 +54,14 @@ function Header({
             </p>
           )}
           {!title && !subtitle && (
-            <span className="text-lg font-bold text-accent-primary">
+            <span
+              className={cn(
+                "text-2xl font-bold font-display tracking-tight",
+                transparent
+                  ? "inline-block px-6 py-2.5 rounded-full bg-[#1a1a1f]/90 backdrop-blur-md border border-[#2a2a30] text-accent-primary shadow-lg"
+                  : "text-accent-primary"
+              )}
+            >
               {t("appName")}
             </span>
           )}

@@ -84,6 +84,8 @@
   --color-confidence-medium: var(--confidence-medium);
   --color-confidence-low: var(--confidence-low);
   --color-confidence-pending: var(--confidence-pending);
+
+  /* Font families - referencing the CSS variables from next/font */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -100,10 +102,33 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography - Font utilities */
+/* Using the CSS variables created by next/font directly */
+.font-display {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+.font-sans {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.font-accent {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+/* Apply display font to headings by default */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
 /* Accessibility - Focus styles */

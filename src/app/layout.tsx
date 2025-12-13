@@ -1,14 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk, Outfit } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 
+// Primary: Space Grotesk - Logo, headers, app name (techy, impactful)
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+// Secondary: Geist Sans - Body text, UI elements (clean, readable)
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
+// Tertiary: Outfit - Accent text if needed (geometric, bold)
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+// Mono: Geist Mono - Code, data displays
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -54,7 +70,7 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${geistSans.variable} ${outfit.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           {children}

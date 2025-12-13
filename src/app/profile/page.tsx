@@ -6,6 +6,7 @@ import { BottomNav } from "@/components/layout/bottom-nav";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   ArrowLeft,
   Globe,
@@ -16,11 +17,119 @@ import {
   Scale,
   FileText,
   LogIn,
+  LogOut,
+  User,
+  Loader2,
+  Phone,
+  Check,
+  CheckCircle,
+  X,
 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/hooks";
+import { useState } from "react";
+import { formatPhoneInput, formatPhoneDisplay, toE164, isValidUSPhone } from "@/lib/utils/phone";
+import { signInWithPhone, verifyPhoneOtp, removePhone } from "@/lib/supabase/auth";
 
 export default function ProfilePage() {
   const t = useTranslations();
+  const { user, loading: authLoading, signOut, refreshUser } = useAuth();
+  const [signingOut, setSigningOut] = useState(false);
+
+  // Phone verification state
+  const [showPhoneForm, setShowPhoneForm] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [phoneStep, setPhoneStep] = useState<"input" | "verify">("input");
+  const [phoneLoading, setPhoneLoading] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [phoneSuccess, setPhoneSuccess] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [removeLoading, setRemoveLoading] = useState(false);
+
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    await signOut();
+    setSigningOut(false);
+  };
+
+  const handleSendPhoneCode = async () => {
+    if (!isValidUSPhone(phoneNumber)) {
+      setPhoneError(t("auth.invalidPhone"));
+      return;
+    }
+
+    setPhoneLoading(true);
+    setPhoneError(null);
+
+    const result = await signInWithPhone(toE164(phoneNumber));
+
+    setPhoneLoading(false);
+
+    if (result.error) {
+      setPhoneError(result.error.message);
+    } else {
+      setPhoneStep("verify");
+    }
+  };
+
+  const handleVerifyPhone = async () => {
+    if (otpCode.length !== 6) {
+      setPhoneError(t("auth.invalidCode"));
+      return;
+    }
+
+    setPhoneLoading(true);
+    setPhoneError(null);
+
+    const result = await verifyPhoneOtp(toE164(phoneNumber), otpCode);
+
+    setPhoneLoading(false);
+
+    if (result.error) {
+      setPhoneError(result.error.message);
+    } else {
+      setPhoneSuccess(true);
+      setShowPhoneForm(false);
+      setPhoneStep("input");
+      setPhoneNumber("");
+      setOtpCode("");
+      // Refresh user to get updated phone
+      refreshUser();
+      setTimeout(() => setPhoneSuccess(false), 3000);
+    }
+  };
+
+  const resetPhoneForm = () => {
+    setShowPhoneForm(false);
+    setPhoneStep("input");
+    setPhoneNumber("");
+    setOtpCode("");
+    setPhoneError(null);
+  };
+
+  const handleRemovePhone = async () => {
+    setRemoveLoading(true);
+    const result = await removePhone();
+    setRemoveLoading(false);
+
+    if (result.error) {
+      setPhoneError(result.error.message);
+    } else {
+      setShowDeleteModal(false);
+      setDeleteMode(false);
+      refreshUser();
+    }
+  };
+
+  const handleBadgeClick = () => {
+    if (deleteMode) {
+      setShowDeleteModal(true);
+    } else {
+      setDeleteMode(true);
+    }
+  };
 
   const settingsGroups = [
     {
@@ -87,27 +196,214 @@ export default function ProfilePage() {
 
       {/* Content */}
       <main className="pt-16 px-4 max-w-lg mx-auto">
-        {/* Login prompt */}
+        {/* User Profile Card */}
         <Card className="mb-6">
           <CardContent className="pt-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-surface-hover flex items-center justify-center">
-                <LogIn className="w-6 h-6 text-foreground-muted" />
+            {authLoading ? (
+              <div className="flex items-center justify-center py-2">
+                <Loader2 className="w-6 h-6 text-foreground-muted animate-spin" />
               </div>
-              <div className="flex-1">
-                <h3 className="font-medium text-foreground">Guest User</h3>
-                <p className="text-sm text-foreground-secondary">
-                  Sign in to save your preferences
-                </p>
-              </div>
-              <Link href="/auth">
-                <Button size="sm" variant="secondary">
-                  {t("common.login")}
+            ) : user ? (
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-accent-primary-muted flex items-center justify-center">
+                  <User className="w-6 h-6 text-accent-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-foreground truncate">
+                    {user.email}
+                  </h3>
+                  <p className="text-sm text-foreground-secondary">
+                    {t("profile.signedIn")}
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleSignOut}
+                  disabled={signingOut}
+                >
+                  {signingOut ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <LogOut className="w-4 h-4 mr-1.5" />
+                      {t("common.logout")}
+                    </>
+                  )}
                 </Button>
-              </Link>
-            </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-surface-hover flex items-center justify-center">
+                  <LogIn className="w-6 h-6 text-foreground-muted" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-foreground">{t("profile.guestUser")}</h3>
+                  <p className="text-sm text-foreground-secondary">
+                    {t("profile.signInPrompt")}
+                  </p>
+                </div>
+                <Link href="/auth">
+                  <Button size="sm" variant="secondary">
+                    {t("common.login")}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
+
+        {/* Phone Number Section - Only show for logged-in users */}
+        {user && (
+          <Card className="mb-6">
+            <CardContent className="pt-4">
+              {/* Header row */}
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-[var(--radius-md)] bg-surface-hover flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-foreground-secondary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-foreground">{t("auth.phone")}</h3>
+                  <p className="text-sm text-foreground-secondary">
+                    {user.phone ? t("alerts.phone.verified") : t("alerts.phone.notRegistered")}
+                  </p>
+                </div>
+
+                {/* Right side: badge or add button */}
+                {user.phone ? (
+                  <button
+                    onClick={handleBadgeClick}
+                    className={`relative z-50 inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors ${
+                      deleteMode
+                        ? "bg-status-danger/10 border border-status-danger/20"
+                        : "bg-status-info/10 border border-status-info/20"
+                    }`}
+                  >
+                    <span className={`text-sm font-medium ${deleteMode ? "text-status-danger" : "text-status-info"}`}>
+                      {formatPhoneDisplay(user.phone)}
+                    </span>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                      deleteMode ? "bg-[var(--status-danger)]" : "bg-[var(--status-info)]"
+                    }`}>
+                      {deleteMode ? (
+                        <X className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                      ) : (
+                        <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                      )}
+                    </div>
+                  </button>
+                ) : !showPhoneForm ? (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setShowPhoneForm(true)}
+                  >
+                    {t("alerts.phone.addPhone")}
+                  </Button>
+                ) : null}
+              </div>
+
+              {/* Phone form - shown below header when adding */}
+              {!user.phone && showPhoneForm && (
+                <div className="mt-4 space-y-3">
+                  {phoneStep === "input" ? (
+                    <>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted text-sm">
+                          +1
+                        </span>
+                        <Input
+                          type="tel"
+                          placeholder="(555) 123-4567"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(formatPhoneInput(e.target.value))}
+                          className="pl-10"
+                          maxLength={14}
+                        />
+                      </div>
+                      {phoneError && (
+                        <p className="text-sm text-status-danger">{phoneError}</p>
+                      )}
+                      <div className="flex gap-2">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={resetPhoneForm}
+                          className="flex-1"
+                        >
+                          {t("common.cancel")}
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={handleSendPhoneCode}
+                          disabled={phoneLoading || !phoneNumber}
+                          className="flex-1"
+                        >
+                          {phoneLoading ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            t("auth.sendCode")
+                          )}
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm text-foreground-secondary">
+                        {t("auth.otpSent", { phone: formatPhoneDisplay(toE164(phoneNumber)) })}
+                      </p>
+                      <Input
+                        type="text"
+                        placeholder="123456"
+                        value={otpCode}
+                        onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                        className="text-center text-lg tracking-widest"
+                        maxLength={6}
+                      />
+                      {phoneError && (
+                        <p className="text-sm text-status-danger">{phoneError}</p>
+                      )}
+                      <div className="flex gap-2">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => {
+                            setPhoneStep("input");
+                            setOtpCode("");
+                            setPhoneError(null);
+                          }}
+                          className="flex-1"
+                        >
+                          {t("common.back")}
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={handleVerifyPhone}
+                          disabled={phoneLoading || otpCode.length !== 6}
+                          className="flex-1"
+                        >
+                          {phoneLoading ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            t("auth.verify")
+                          )}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Success message */}
+              {phoneSuccess && (
+                <div className="mt-3 flex items-center gap-2 text-status-success text-sm">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>{t("auth.loginSuccess")}</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Settings Groups */}
         {settingsGroups.map((group, groupIndex) => (
@@ -117,31 +413,43 @@ export default function ProfilePage() {
             </h2>
             <Card>
               <CardContent className="p-0">
-                {group.items.map((item, itemIndex) => (
-                  <button
-                    key={itemIndex}
-                    className="w-full flex items-center gap-3 p-4 hover:bg-surface-hover transition-colors text-left border-b border-border last:border-0"
-                  >
-                    <div className="w-9 h-9 rounded-[var(--radius-md)] bg-surface-hover flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-foreground-secondary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-foreground">{item.label}</p>
-                      <p className="text-sm text-foreground-secondary truncate">
-                        {item.description}
-                      </p>
-                    </div>
-                    {item.action === "language" && <LanguageSwitcher />}
-                    {item.action === "toggle" && (
-                      <div className="w-11 h-6 bg-surface-hover rounded-full relative">
-                        <div className="w-5 h-5 bg-foreground-muted rounded-full absolute left-0.5 top-0.5" />
+                {group.items.map((item, itemIndex) => {
+                  // Use div for items with nested interactive elements, button otherwise
+                  const isInteractive = item.action === "language" || item.action === "toggle";
+                  const Component = isInteractive ? "div" : "button";
+
+                  return (
+                    <Component
+                      key={itemIndex}
+                      className={`w-full flex items-center gap-3 p-4 transition-colors text-left border-b border-border last:border-0 ${
+                        isInteractive ? "" : "hover:bg-surface-hover cursor-pointer"
+                      }`}
+                    >
+                      <div className="w-9 h-9 rounded-[var(--radius-md)] bg-surface-hover flex items-center justify-center">
+                        <item.icon className="w-5 h-5 text-foreground-secondary" />
                       </div>
-                    )}
-                    {item.action === "link" && (
-                      <ChevronRight className="w-5 h-5 text-foreground-muted" />
-                    )}
-                  </button>
-                ))}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-foreground">{item.label}</p>
+                        <p className="text-sm text-foreground-secondary truncate">
+                          {item.description}
+                        </p>
+                      </div>
+                      {item.action === "language" && <LanguageSwitcher />}
+                      {item.action === "toggle" && (
+                        <button
+                          type="button"
+                          className="w-11 h-6 bg-surface-hover rounded-full relative hover:bg-surface-active transition-colors"
+                          aria-label="Toggle notifications"
+                        >
+                          <div className="w-5 h-5 bg-foreground-muted rounded-full absolute left-0.5 top-0.5 transition-transform" />
+                        </button>
+                      )}
+                      {item.action === "link" && (
+                        <ChevronRight className="w-5 h-5 text-foreground-muted" />
+                      )}
+                    </Component>
+                  );
+                })}
               </CardContent>
             </Card>
           </div>
@@ -167,6 +475,61 @@ export default function ProfilePage() {
 
       {/* Bottom navigation */}
       <BottomNav />
+
+      {/* Invisible overlay to reset delete mode when clicking outside badge */}
+      {deleteMode && !showDeleteModal && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setDeleteMode(false)}
+        />
+      )}
+
+      {/* Delete Phone Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => {
+              setShowDeleteModal(false);
+              setDeleteMode(false);
+            }}
+          />
+          <div className="relative bg-surface border border-border rounded-[var(--radius-lg)] p-5 w-full max-w-xs shadow-[var(--shadow-lg)]">
+            <h3 className="text-base font-semibold text-foreground mb-2">
+              Remove phone number?
+            </h3>
+            <p className="text-sm text-foreground-secondary mb-5">
+              {t("settings.danger.deleteWarning")}
+            </p>
+            <div className="flex gap-3">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDeleteMode(false);
+                }}
+                disabled={removeLoading}
+              >
+                {t("common.cancel")}
+              </Button>
+              <Button
+                size="sm"
+                className="flex-1 bg-status-danger hover:bg-status-danger/90"
+                onClick={handleRemovePhone}
+                disabled={removeLoading}
+              >
+                {removeLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  t("common.delete")
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,68 +1,51 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { localeNames, locales, type Locale } from "@/i18n/config";
-import { Globe } from "lucide-react";
+import { type Locale } from "@/i18n/config";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useRef, useEffect } from "react";
 
 function LanguageSwitcher() {
   const currentLocale = useLocale() as Locale;
   const t = useTranslations("accessibility");
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleLocaleChange = (locale: Locale) => {
+    if (locale === currentLocale) return;
     document.cookie = `locale=${locale};path=/;max-age=31536000`;
-    setIsOpen(false);
     window.location.reload();
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div
+      className="inline-flex rounded-full bg-surface-hover p-1"
+      role="radiogroup"
+      aria-label={t("languageSelector")}
+    >
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-[var(--radius-md)] text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors"
-        aria-label={t("languageSelector")}
-        aria-expanded={isOpen}
-        aria-haspopup="true"
+        onClick={() => handleLocaleChange("en")}
+        className={cn(
+          "px-3 py-1 text-xs font-medium rounded-full transition-colors",
+          currentLocale === "en"
+            ? "bg-accent-primary text-white"
+            : "text-foreground-muted hover:text-foreground"
+        )}
+        role="radio"
+        aria-checked={currentLocale === "en"}
       >
-        <Globe className="h-5 w-5" />
+        EN
       </button>
-
-      {isOpen && (
-        <div
-          className="absolute right-0 top-full mt-2 w-36 rounded-[var(--radius-md)] bg-surface border border-border shadow-[var(--shadow-lg)] overflow-hidden animate-fade-in"
-          role="menu"
-        >
-          {locales.map((locale) => (
-            <button
-              key={locale}
-              onClick={() => handleLocaleChange(locale)}
-              className={cn(
-                "w-full px-4 py-2.5 text-left text-sm transition-colors",
-                locale === currentLocale
-                  ? "bg-accent-primary-muted text-accent-primary font-medium"
-                  : "text-foreground hover:bg-surface-hover"
-              )}
-              role="menuitem"
-            >
-              {localeNames[locale]}
-            </button>
-          ))}
-        </div>
-      )}
+      <button
+        onClick={() => handleLocaleChange("es")}
+        className={cn(
+          "px-3 py-1 text-xs font-medium rounded-full transition-colors",
+          currentLocale === "es"
+            ? "bg-accent-primary text-white"
+            : "text-foreground-muted hover:text-foreground"
+        )}
+        role="radio"
+        aria-checked={currentLocale === "es"}
+      >
+        ES
+      </button>
     </div>
   );
 }

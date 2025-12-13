@@ -4,75 +4,57 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
-import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { MapView } from "@/components/map";
 import { Badge } from "@/components/ui/badge";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { ConfidenceIndicator } from "@/components/ui/confidence-indicator";
 import { Button } from "@/components/ui/button";
-import { useGeolocation } from "@/hooks";
+import { useGeolocation, useReports } from "@/hooks";
+import type { InteractionType } from "@/lib/supabase";
 import {
-  RefreshCw,
-  Navigation,
   Clock,
   MapPin,
   CheckCircle,
   XCircle,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 import type { Report } from "@/types";
-
-// Mock data for testing - remove once connected to Supabase
-const mockReports: Report[] = [
-  {
-    id: "1",
-    location: { latitude: 34.0522, longitude: -118.2437 },
-    city: "Los Angeles",
-    region: "California",
-    activityType: "checkpoint",
-    description: "Checkpoint set up on Main St near the freeway entrance",
-    imageUrl: "/placeholder.jpg",
-    status: "verified",
-    confidenceScore: 85,
-    createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
-    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 11.5).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    location: { latitude: 34.0622, longitude: -118.2537 },
-    city: "Los Angeles",
-    region: "California",
-    activityType: "patrol",
-    description: "Patrol vehicles seen in the area",
-    imageUrl: "/placeholder.jpg",
-    status: "verified",
-    confidenceScore: 60,
-    createdAt: new Date(Date.now() - 1000 * 60 * 90).toISOString(), // 90 mins ago
-    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 10.5).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
 
 export default function HomePage() {
   const t = useTranslations();
   const { location, loading: locationLoading, refresh: refreshLocation } = useGeolocation();
-  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const {
+    reports,
+    loading: reportsLoading,
+    error: reportsError,
+    refresh: refreshReports,
+    addInteraction,
+  } = useReports({ location, radiusMiles: 25 });
 
-  // For demo purposes, use mock data. In production, fetch from Supabase
-  const reports = mockReports;
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [interactionLoading, setInteractionLoading] = useState<string | null>(null);
+  const [interactionError, setInteractionError] = useState<string | null>(null);
 
   const handleRefresh = async () => {
-    setIsRefreshing(true);
     refreshLocation();
-    // TODO: Refetch reports from Supabase
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsRefreshing(false);
+    await refreshReports();
   };
 
-  const handleCenterOnUser = () => {
-    refreshLocation();
+  const handleInteraction = async (reportId: string, type: InteractionType) => {
+    setInteractionLoading(type);
+    setInteractionError(null);
+
+    try {
+      await addInteraction(reportId, type);
+      // Close the sheet after successful interaction
+      setSelectedReport(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to submit feedback";
+      setInteractionError(message);
+    } finally {
+      setInteractionLoading(null);
+    }
   };
 
   const getTimeAgo = (dateString: string) => {
@@ -103,10 +85,12 @@ export default function HomePage() {
     other: "📍",
   };
 
+  const isLoading = locationLoading || reportsLoading;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <Header rightAction={<LanguageSwitcher />} transparent />
+      <Header transparent />
 
       {/* Map */}
       <div className="fixed inset-0">
@@ -115,35 +99,35 @@ export default function HomePage() {
           zoom={13}
           reports={reports}
           onReportClick={setSelectedReport}
+          onRefresh={handleRefresh}
+          onLocate={refreshLocation}
         />
       </div>
 
-      {/* Reports count badge */}
-      <div className="fixed top-16 left-4 z-20">
-        <Badge variant={reports.length > 0 ? "warning" : "default"}>
-          {t("map.reportsNearby", { count: reports.length })}
-        </Badge>
+      {/* Status badge - bottom center above nav */}
+      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-20">
+        {isLoading ? (
+          <Badge variant="default" className="flex items-center gap-2 px-4 py-2 text-sm">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {t("common.loading")}
+          </Badge>
+        ) : reportsError ? (
+          <Badge variant="danger" className="px-4 py-2 text-sm">{reportsError}</Badge>
+        ) : (
+          <Badge
+            variant={reports.length > 0 ? "warning" : "default"}
+            className="flex items-center gap-2.5 px-4 py-2 text-sm shadow-lg"
+          >
+            {reports.length > 0 && (
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-warning opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-status-warning"></span>
+              </span>
+            )}
+            {t("map.reportsNearby", { count: reports.length })}
+          </Badge>
+        )}
       </div>
-
-      {/* Center on user button */}
-      <button
-        onClick={handleCenterOnUser}
-        disabled={locationLoading}
-        className="fixed bottom-24 left-4 z-20 w-12 h-12 rounded-full bg-surface border border-border shadow-[var(--shadow-md)] flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors disabled:opacity-50"
-        aria-label={t("map.myLocation")}
-      >
-        <Navigation className="w-5 h-5" />
-      </button>
-
-      {/* Refresh button */}
-      <button
-        onClick={handleRefresh}
-        disabled={isRefreshing}
-        className="fixed bottom-24 right-4 z-20 w-12 h-12 rounded-full bg-surface border border-border shadow-[var(--shadow-md)] flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors disabled:opacity-50"
-        aria-label={t("map.refreshing")}
-      >
-        <RefreshCw className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`} />
-      </button>
 
       {/* Bottom navigation */}
       <BottomNav />
@@ -151,7 +135,10 @@ export default function HomePage() {
       {/* Report Detail Bottom Sheet */}
       <BottomSheet
         open={!!selectedReport}
-        onClose={() => setSelectedReport(null)}
+        onClose={() => {
+          setSelectedReport(null);
+          setInteractionError(null);
+        }}
         title={
           selectedReport
             ? `${activityTypeIcons[selectedReport.activityType]} ${activityTypeLabels[selectedReport.activityType]}`
@@ -201,30 +188,55 @@ export default function HomePage() {
               />
             </div>
 
+            {/* Error message */}
+            {interactionError && (
+              <div className="p-3 rounded-[var(--radius-md)] bg-status-danger-muted text-status-danger text-sm">
+                {interactionError}
+              </div>
+            )}
+
             {/* Action buttons */}
             <div className="grid grid-cols-3 gap-2 pt-2">
               <Button
                 variant="secondary"
                 size="sm"
                 className="flex-col h-auto py-3"
+                disabled={interactionLoading !== null}
+                onClick={() => handleInteraction(selectedReport.id, "confirm")}
               >
-                <CheckCircle className="w-5 h-5 mb-1 text-status-success" />
+                {interactionLoading === "confirm" ? (
+                  <Loader2 className="w-5 h-5 mb-1 animate-spin" />
+                ) : (
+                  <CheckCircle className="w-5 h-5 mb-1 text-status-success" />
+                )}
                 <span className="text-xs">{t("reportCard.confirmReport")}</span>
               </Button>
               <Button
                 variant="secondary"
                 size="sm"
                 className="flex-col h-auto py-3"
+                disabled={interactionLoading !== null}
+                onClick={() => handleInteraction(selectedReport.id, "no_longer_active")}
               >
-                <AlertCircle className="w-5 h-5 mb-1 text-status-warning" />
+                {interactionLoading === "no_longer_active" ? (
+                  <Loader2 className="w-5 h-5 mb-1 animate-spin" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 mb-1 text-status-warning" />
+                )}
                 <span className="text-xs">{t("reportCard.markInactive")}</span>
               </Button>
               <Button
                 variant="secondary"
                 size="sm"
                 className="flex-col h-auto py-3"
+                disabled={interactionLoading !== null}
+                onClick={() => handleInteraction(selectedReport.id, "false")}
               >
-                <XCircle className="w-5 h-5 mb-1 text-status-danger" />
+                {interactionLoading === "false" ? (
+                  <Loader2 className="w-5 h-5 mb-1 animate-spin" />
+                ) : (
+                  <XCircle className="w-5 h-5 mb-1 text-status-danger" />
+                )}
                 <span className="text-xs">{t("reportCard.markFalse")}</span>
               </Button>
             </div>

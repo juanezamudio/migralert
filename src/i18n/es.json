@@ -83,6 +83,9 @@
   "alerts": {
     "title": "Alertas de Emergencia",
     "subtitle": "Configura tus contactos de emergencia y mensaje de alerta",
+    "accountRequired": "Cuenta Requerida",
+    "accountRequiredDescription": "Crea una cuenta para configurar contactos de emergencia y usar el boton de panico.",
+    "noContactsWarning": "Agrega al menos un contacto para habilitar el boton de panico",
     "contacts": {
       "title": "Contactos de Emergencia",
       "subtitle": "Hasta 5 contactos seran notificados si activas una alerta",
@@ -90,7 +93,8 @@
       "name": "Nombre",
       "phone": "Numero de Telefono",
       "relationship": "Relacion (opcional)",
-      "empty": "No hay contactos de emergencia agregados"
+      "empty": "No hay contactos de emergencia agregados",
+      "nameRequired": "El nombre es requerido"
     },
     "message": {
       "title": "Mensaje de Alerta",
@@ -108,6 +112,10 @@
       "title": "Compartir Ubicacion",
       "description": "Incluir tu ultima ubicacion conocida en la alerta"
     },
+    "audio": {
+      "title": "Alerta Sonora",
+      "description": "Reproducir un sonido al enviar alerta"
+    },
     "panicButton": {
       "title": "Alerta de Emergencia",
       "description": "Mantén presionado para enviar una alerta a todos tus contactos de emergencia",
@@ -115,7 +123,44 @@
       "sending": "Enviando alerta...",
       "sent": "Alerta enviada",
       "failed": "Error al enviar alerta"
+    },
+    "test": {
+      "button": "Enviar alerta de prueba",
+      "buttonShort": "Probar",
+      "sending": "Enviando...",
+      "sent": "Alerta de prueba enviada a tu telefono",
+      "description": "Envia un mensaje de prueba marcado [TEST] para verificar tu configuracion",
+      "tooltip": "Enviar prueba a tu telefono",
+      "noPhone": "Agrega un telefono para probar"
+    },
+    "phone": {
+      "registered": "Tu telefono",
+      "notRegistered": "Sin telefono",
+      "addPhone": "Agregar",
+      "verified": "Verificado"
+    },
+    "history": {
+      "title": "Historial de Alertas",
+      "test": "PRUEBA",
+      "notified": "{count, plural, =0 {Enviado a ti} =1 {1 contacto notificado} other {# contactos notificados}}",
+      "daysAgo": "hace {days}d",
+      "clear": "Borrar",
+      "confirmClear": "Borrar todo?",
+      "empty": "No hay alertas recientes"
+    },
+    "onboarding": {
+      "title": "Guia de Configuracion",
+      "step1": "Agrega hasta 5 contactos de emergencia que seran notificados",
+      "step2": "Personaliza tu mensaje de alerta o usa una plantilla",
+      "step3": "Habilita compartir ubicacion para que sepan donde estas",
+      "step4": "Manten presionado el boton SOS por 3 segundos para enviar",
+      "dismiss": "Entendido, gracias!"
     }
+  },
+  "profile": {
+    "signedIn": "Sesion iniciada",
+    "guestUser": "Usuario Invitado",
+    "signInPrompt": "Inicia sesion para guardar tus preferencias"
   },
   "auth": {
     "welcome": "Bienvenido a MigrAlert",
@@ -129,7 +174,28 @@
     "confirmPassword": "Confirmar Contrasena",
     "forgotPassword": "Olvidaste tu contrasena?",
     "alreadyHaveAccount": "Ya tienes una cuenta?",
-    "noAccount": "No tienes una cuenta?"
+    "noAccount": "No tienes una cuenta?",
+    "passwordMismatch": "Las contrasenas no coinciden",
+    "passwordTooShort": "La contrasena debe tener al menos 6 caracteres",
+    "loginSubtitle": "Inicia sesion para acceder a tus contactos de emergencia",
+    "resetSubtitle": "Ingresa tu correo para recibir un enlace de restablecimiento",
+    "resetPassword": "Restablecer Contrasena",
+    "sendResetLink": "Enviar Enlace",
+    "checkEmail": "Revisa Tu Correo",
+    "confirmationSent": "Hemos enviado un enlace de confirmacion a {email}. Por favor haz clic en el enlace para verificar tu cuenta.",
+    "resetEmailSent": "Hemos enviado un enlace de restablecimiento a {email}. Por favor revisa tu bandeja de entrada.",
+    "backToLogin": "Volver a Iniciar Sesion",
+    "accountCreated": "Cuenta creada exitosamente!",
+    "phone": "Telefono",
+    "verifyPhone": "Verifica Tu Telefono",
+    "otpSent": "Enviamos un codigo de 6 digitos a {phone}",
+    "verificationCode": "Codigo de Verificacion",
+    "verify": "Verificar",
+    "resendCode": "No recibiste el codigo? Reenviar",
+    "sendCode": "Enviar Codigo",
+    "invalidPhone": "Por favor ingresa un numero de telefono valido de 10 digitos",
+    "invalidCode": "Por favor ingresa un codigo valido de 6 digitos",
+    "loginSuccess": "Sesion iniciada exitosamente!"
   },
   "settings": {
     "title": "Configuracion",

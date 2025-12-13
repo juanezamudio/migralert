@@ -5,6 +5,7 @@ import { Map, Plus, Bell, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/hooks";
 
 const navItems = [
   { href: "/", icon: Map, labelKey: "map" },
@@ -16,6 +17,7 @@ const navItems = [
 function BottomNav() {
   const pathname = usePathname();
   const t = useTranslations("nav");
+  const { user } = useAuth();
 
   return (
     <nav
@@ -39,13 +41,19 @@ function BottomNav() {
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              <Icon
-                className={cn(
-                  "h-6 w-6 transition-transform",
-                  isActive && "scale-110"
+              <div className="relative">
+                <Icon
+                  className={cn(
+                    "h-6 w-6 transition-transform",
+                    isActive && "scale-110"
+                  )}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                {/* Show logged-in indicator on profile icon */}
+                {href === "/profile" && user && (
+                  <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-status-success rounded-full border-2 border-background-secondary" />
                 )}
-                strokeWidth={isActive ? 2.5 : 2}
-              />
+              </div>
               <span className="text-xs font-medium">{t(labelKey)}</span>
             </Link>
           );

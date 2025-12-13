@@ -83,6 +83,9 @@
   "alerts": {
     "title": "Emergency Alerts",
     "subtitle": "Set up your emergency contacts and alert message",
+    "accountRequired": "Account Required",
+    "accountRequiredDescription": "Create an account to set up emergency contacts and use the panic button feature.",
+    "noContactsWarning": "Add at least one contact to enable the panic button",
     "contacts": {
       "title": "Emergency Contacts",
       "subtitle": "Up to 5 contacts will be notified if you trigger an alert",
@@ -90,7 +93,8 @@
       "name": "Name",
       "phone": "Phone Number",
       "relationship": "Relationship (optional)",
-      "empty": "No emergency contacts added yet"
+      "empty": "No emergency contacts added yet",
+      "nameRequired": "Name is required"
     },
     "message": {
       "title": "Alert Message",
@@ -108,6 +112,10 @@
       "title": "Share Location",
       "description": "Include your last known location in the alert"
     },
+    "audio": {
+      "title": "Sound Alert",
+      "description": "Play a sound when alert is sent"
+    },
     "panicButton": {
       "title": "Emergency Alert",
       "description": "Tap and hold to send an alert to all your emergency contacts",
@@ -115,7 +123,44 @@
       "sending": "Sending alert...",
       "sent": "Alert sent",
       "failed": "Failed to send alert"
+    },
+    "test": {
+      "button": "Send a test alert",
+      "buttonShort": "Test",
+      "sending": "Sending...",
+      "sent": "Test alert sent to your phone",
+      "description": "Sends a test message marked [TEST] to verify your setup",
+      "tooltip": "Send test to your phone",
+      "noPhone": "Add a phone number to test"
+    },
+    "phone": {
+      "registered": "Your phone",
+      "notRegistered": "No phone",
+      "addPhone": "Add phone",
+      "verified": "Verified"
+    },
+    "history": {
+      "title": "Alert History",
+      "test": "TEST",
+      "notified": "{count, plural, =0 {Sent to you} =1 {1 contact notified} other {# contacts notified}}",
+      "daysAgo": "{days}d ago",
+      "clear": "Clear",
+      "confirmClear": "Clear all?",
+      "empty": "No recent alerts"
+    },
+    "onboarding": {
+      "title": "Quick Setup Guide",
+      "step1": "Add up to 5 emergency contacts who will be notified",
+      "step2": "Customize your alert message or use a template",
+      "step3": "Enable location sharing so contacts know where you are",
+      "step4": "Hold the SOS button for 3 seconds to send an alert",
+      "dismiss": "Got it, thanks!"
     }
+  },
+  "profile": {
+    "signedIn": "Signed in",
+    "guestUser": "Guest User",
+    "signInPrompt": "Sign in to save your preferences"
   },
   "auth": {
     "welcome": "Welcome to MigrAlert",
@@ -129,7 +174,28 @@
     "confirmPassword": "Confirm Password",
     "forgotPassword": "Forgot password?",
     "alreadyHaveAccount": "Already have an account?",
-    "noAccount": "Don't have an account?"
+    "noAccount": "Don't have an account?",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "loginSubtitle": "Sign in to access your emergency contacts",
+    "resetSubtitle": "Enter your email to receive a password reset link",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "checkEmail": "Check Your Email",
+    "confirmationSent": "We've sent a confirmation link to {email}. Please click the link to verify your account.",
+    "resetEmailSent": "We've sent a password reset link to {email}. Please check your inbox.",
+    "backToLogin": "Back to Login",
+    "accountCreated": "Account created successfully!",
+    "phone": "Phone",
+    "verifyPhone": "Verify Your Phone",
+    "otpSent": "We sent a 6-digit code to {phone}",
+    "verificationCode": "Verification Code",
+    "verify": "Verify",
+    "resendCode": "Didn't receive a code? Resend",
+    "sendCode": "Send Code",
+    "invalidPhone": "Please enter a valid 10-digit phone number",
+    "invalidCode": "Please enter a valid 6-digit code",
+    "loginSuccess": "Logged in successfully!"
   },
   "settings": {
     "title": "Settings",

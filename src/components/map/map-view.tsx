@@ -26,6 +26,7 @@ const activityColors: Record<string, string> = {
   raid: "#EF4444", // danger red
   patrol: "#3B82F6", // info blue
   detention: "#EF4444", // danger red
+  surveillance: "#8B5CF6", // purple
   other: "#6B7280", // gray
 };
 
@@ -78,9 +79,15 @@ const BLOCKED_TERRITORIES = [
 // Zoom level threshold for general foreign territory (fallback)
 const FOREIGN_TERRITORY_CHECK_ZOOM = 6;
 
-// Center of continental US for reset view (shifted slightly south to show FL and TX tips)
+// Center of continental US for reset view
 const US_CENTER: [number, number] = [-98.5795, 37.5];
 const US_OVERVIEW_ZOOM = 4;
+
+// Continental US bounds for fitBounds - adjusted to match US_CENTER at zoom 4
+const US_BOUNDS: [[number, number], [number, number]] = [
+  [-125, 24],  // Southwest - centered on US_CENTER
+  [-66, 49],   // Northeast - centered on US_CENTER
+];
 
 export function MapView({
   center,
@@ -97,10 +104,10 @@ export function MapView({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Default center (Continental US center) if no location provided
+  // Use US_CENTER as default when no user location
   const defaultCenter: GeoLocation = {
-    latitude: 39.8283,
-    longitude: -98.5795,
+    latitude: US_CENTER[1],
+    longitude: US_CENTER[0],
   };
 
   const mapCenter = center || defaultCenter;
@@ -174,16 +181,27 @@ export function MapView({
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    map.current = new mapboxgl.Map({
+    // Configure initial view based on whether user location is available
+    const mapOptions: mapboxgl.MapOptions = {
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/dark-v11",
-      center: [mapCenter.longitude, mapCenter.latitude],
-      zoom: center ? zoom : 4,
       minZoom: 3,
       maxZoom: 18,
-      maxBounds: MAP_BOUNDS,  // Restrict panning to US region
+      maxBounds: MAP_BOUNDS,
       attributionControl: false,
-    });
+    };
+
+    if (center) {
+      // User has location - center on them
+      mapOptions.center = [center.longitude, center.latitude];
+      mapOptions.zoom = zoom;
+    } else {
+      // No location - use bounds to fit continental US
+      mapOptions.bounds = US_BOUNDS;
+      mapOptions.fitBoundsOptions = { padding: 20 };
+    }
+
+    map.current = new mapboxgl.Map(mapOptions);
 
     const mapInstance = map.current;
 
@@ -218,9 +236,8 @@ export function MapView({
       if (shouldReset) {
         // Reset to US overview
         isResettingRef.current = true;
-        mapInstance.flyTo({
-          center: US_CENTER,
-          zoom: US_OVERVIEW_ZOOM,
+        mapInstance.fitBounds(US_BOUNDS, {
+          padding: 20,
           duration: 800,
         });
 

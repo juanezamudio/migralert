@@ -40,13 +40,14 @@
   },
   "report": {
     "title": "Enviar Reporte",
-    "subtitle": "Ayuda a mantener segura a tu comunidad",
+    "subtitle": "Tu reporte será verificado y compartido con usuarios cercanos",
     "activityType": "Tipo de Actividad",
     "types": {
       "checkpoint": "Punto de control",
       "raid": "Redada",
       "patrol": "Patrulla",
       "detention": "Detencion",
+      "surveillance": "Vigilancia",
       "other": "Otro"
     },
     "description": "Descripcion (opcional)",
@@ -58,11 +59,16 @@
     "location": "Ubicacion",
     "locationDetected": "Ubicacion detectada",
     "locationFailed": "No se pudo detectar la ubicacion",
-    "enableLocation": "Habilitar servicios de ubicacion",
+    "enableLocation": "Habilitar Acceso",
+    "addressOptional": "¿Ubicación diferente? (opcional)",
+    "addressPlaceholder": "Buscar una dirección o lugar...",
+    "usingCustomLocation": "Usando ubicación personalizada en lugar de tu ubicación actual",
     "submitting": "Enviando reporte...",
     "success": "Reporte enviado exitosamente",
     "successMessage": "Tu reporte esta pendiente de verificacion por un moderador",
-    "error": "Error al enviar el reporte"
+    "error": "Error al enviar el reporte",
+    "detectingLocation": "Detectando ubicacion...",
+    "disclaimer": "Los reportes requieren evidencia fotografica y verificacion de ubicacion. Los reportes falsos pueden resultar en acceso restringido."
   },
   "reportCard": {
     "verified": "Verificado",
@@ -82,7 +88,7 @@
   },
   "alerts": {
     "title": "Alertas de Emergencia",
-    "subtitle": "Configura tus contactos de emergencia y mensaje de alerta",
+    "subtitle": "Configura contactos que serán notificados en una emergencia",
     "accountRequired": "Cuenta Requerida",
     "accountRequiredDescription": "Crea una cuenta para configurar contactos de emergencia y usar el boton de panico.",
     "noContactsWarning": "Agrega al menos un contacto para habilitar el boton de panico",

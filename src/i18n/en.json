@@ -40,13 +40,14 @@
   },
   "report": {
     "title": "Submit Report",
-    "subtitle": "Help keep your community safe",
+    "subtitle": "Your report will be verified and shared with nearby users",
     "activityType": "Type of Activity",
     "types": {
       "checkpoint": "Checkpoint",
       "raid": "Raid",
       "patrol": "Patrol",
       "detention": "Detention",
+      "surveillance": "Surveillance",
       "other": "Other"
     },
     "description": "Description (optional)",
@@ -58,11 +59,16 @@
     "location": "Location",
     "locationDetected": "Location detected",
     "locationFailed": "Could not detect location",
-    "enableLocation": "Enable location services",
+    "enableLocation": "Enable Access",
+    "addressOptional": "Different location? (optional)",
+    "addressPlaceholder": "Search for an address or place...",
+    "usingCustomLocation": "Using custom location instead of your current location",
     "submitting": "Submitting report...",
     "success": "Report submitted successfully",
     "successMessage": "Your report is pending verification by a moderator",
-    "error": "Failed to submit report"
+    "error": "Failed to submit report",
+    "detectingLocation": "Detecting location...",
+    "disclaimer": "Reports require photo evidence and location verification. False reports may result in restricted access."
   },
   "reportCard": {
     "verified": "Verified",
@@ -82,7 +88,7 @@
   },
   "alerts": {
     "title": "Emergency Alerts",
-    "subtitle": "Set up your emergency contacts and alert message",
+    "subtitle": "Set up contacts who will be notified in an emergency",
     "accountRequired": "Account Required",
     "accountRequiredDescription": "Create an account to set up emergency contacts and use the panic button feature.",
     "noContactsWarning": "Add at least one contact to enable the panic button",

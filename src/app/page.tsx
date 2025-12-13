@@ -19,6 +19,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import Image from "next/image";
 import type { Report } from "@/types";
 
 export default function HomePage() {
@@ -74,6 +75,7 @@ export default function HomePage() {
     raid: t("report.types.raid"),
     patrol: t("report.types.patrol"),
     detention: t("report.types.detention"),
+    surveillance: t("report.types.surveillance"),
     other: t("report.types.other"),
   };
 
@@ -82,6 +84,7 @@ export default function HomePage() {
     raid: "🚨",
     patrol: "🚔",
     detention: "⚠️",
+    surveillance: "👁️",
     other: "📍",
   };
 
@@ -147,6 +150,18 @@ export default function HomePage() {
       >
         {selectedReport && (
           <div className="space-y-4">
+            {/* Photo */}
+            {selectedReport.imageUrl && (
+              <div className="relative w-full h-48 rounded-[var(--radius-md)] overflow-hidden bg-surface">
+                <Image
+                  src={selectedReport.imageUrl}
+                  alt="Report evidence"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+
             {/* Status and time */}
             <div className="flex items-center justify-between">
               <Badge

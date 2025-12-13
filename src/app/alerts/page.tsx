@@ -25,6 +25,7 @@ import {
   Sparkles,
   Volume2,
   VolumeX,
+  Lightbulb,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useCallback, useEffect } from "react";
@@ -93,6 +94,7 @@ export default function AlertsPage() {
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
+  const [showInfoCard, setShowInfoCard] = useState(false);
 
   // Check if user has seen onboarding and load audio preference
   useEffect(() => {
@@ -102,7 +104,18 @@ export default function AlertsPage() {
     }
     const audioPreference = localStorage.getItem("alerts-audio-enabled");
     setAudioEnabled(audioPreference === "true");
+
+    // Check if info card was dismissed
+    const infoDismissed = localStorage.getItem("alerts-info-dismissed");
+    if (!infoDismissed) {
+      setShowInfoCard(true);
+    }
   }, [user]);
+
+  const dismissInfoCard = useCallback(() => {
+    localStorage.setItem("alerts-info-dismissed", "true");
+    setShowInfoCard(false);
+  }, []);
 
   const toggleAudio = () => {
     const newValue = !audioEnabled;
@@ -386,9 +399,19 @@ export default function AlertsPage() {
         />
 
         <main className="pt-16 px-4 max-w-lg mx-auto">
-          <p className="text-foreground-secondary text-sm mb-6">
-            {t("alerts.subtitle")}
-          </p>
+          {/* Info Card */}
+          <Card className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10">
+            <CardContent className="pt-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                  <Lightbulb className="w-4 h-4 text-status-info" />
+                </div>
+                <p className="flex-1 text-sm text-foreground leading-relaxed pt-1">
+                  {t("alerts.subtitle")}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
           <Card className="mb-6 border-accent-primary">
             <CardContent className="pt-4">
@@ -458,7 +481,29 @@ export default function AlertsPage() {
       />
 
       <main className="pt-16 px-4 max-w-lg mx-auto">
-        {/* Panic Button - At top */}
+        {/* Info Card - Above SOS */}
+        {showInfoCard && (
+          <Card className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10">
+            <CardContent className="pt-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                  <Lightbulb className="w-4 h-4 text-status-info" />
+                </div>
+                <p className="flex-1 text-sm text-foreground leading-relaxed pt-1">
+                  {t("alerts.subtitle")}
+                </p>
+                <button
+                  onClick={dismissInfoCard}
+                  className="p-1 text-foreground-muted hover:text-foreground transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Panic Button */}
         <div className="mb-6">
           <button
             onMouseDown={startHold}
@@ -504,10 +549,6 @@ export default function AlertsPage() {
             </div>
           </button>
         </div>
-
-        <p className="text-foreground-secondary text-sm mb-4">
-          {t("alerts.subtitle")}
-        </p>
 
         {/* Onboarding Card */}
         {showOnboarding && (

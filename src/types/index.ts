@@ -1,5 +1,5 @@
 // Report Types
-export type ActivityType = "checkpoint" | "raid" | "patrol" | "detention" | "other";
+export type ActivityType = "checkpoint" | "raid" | "patrol" | "detention" | "surveillance" | "other";
 
 export type ReportStatus = "pending" | "verified" | "removed";
 

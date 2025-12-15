@@ -156,7 +156,7 @@ export interface CreateReportInput {
   region: string;
   activityType: ActivityType;
   description?: string;
-  imageUrl: string;
+  imageUrl?: string; // Optional - reports without photos have lower initial confidence
 }
 
 export async function createReport(input: CreateReportInput): Promise<Report> {
@@ -164,6 +164,10 @@ export async function createReport(input: CreateReportInput): Promise<Report> {
 
   // Create PostGIS point from coordinates
   const locationPoint = `POINT(${input.longitude} ${input.latitude})`;
+
+  // Reports with photos start with higher confidence (70%)
+  // Reports without photos start with lower confidence (40%)
+  const initialConfidence = input.imageUrl ? 70 : 40;
 
   const { data, error } = await supabase
     .from("reports")
@@ -173,9 +177,9 @@ export async function createReport(input: CreateReportInput): Promise<Report> {
       region: input.region,
       activity_type: input.activityType,
       description: input.description,
-      image_url: input.imageUrl,
+      image_url: input.imageUrl || null,
       status: "pending",
-      confidence_score: 50,
+      confidence_score: initialConfidence,
     })
     .select()
     .single();

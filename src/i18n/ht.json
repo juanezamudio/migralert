@@ -1,0 +1,479 @@
+{
+  "common": {
+    "appName": "MigrAlert",
+    "loading": "Ap chaje...",
+    "error": "Yon erè rive",
+    "retry": "Eseye ankò",
+    "cancel": "Anile",
+    "confirm": "Konfime",
+    "save": "Anrejistre",
+    "delete": "Efase",
+    "edit": "Modifye",
+    "close": "Fèmen",
+    "back": "Retounen",
+    "next": "Swivan",
+    "submit": "Soumèt",
+    "search": "Chèche",
+    "filter": "Filtre",
+    "share": "Pataje",
+    "settings": "Paramèt",
+    "help": "Èd",
+    "logout": "Dekonekte",
+    "login": "Konekte",
+    "signup": "Enskri"
+  },
+  "nav": {
+    "map": "Kat",
+    "report": "Rapòte",
+    "alerts": "Alèt",
+    "profile": "Pwofil"
+  },
+  "map": {
+    "title": "Rapò Aktif yo",
+    "noReports": "Pa gen rapò aktif nan zòn ou a",
+    "zoomIn": "Agrandi",
+    "zoomOut": "Diminye",
+    "myLocation": "Kote m ye",
+    "refreshing": "Ap aktyalize...",
+    "lastUpdated": "Dènye aktyalizasyon {time}",
+    "reportsNearby": "{count, plural, =0 {Pa gen rapò} =1 {1 rapò} other {# rapò}} tou pre"
+  },
+  "report": {
+    "title": "Soumèt Rapò",
+    "subtitle": "Rapò ou a ap verifye epi pataje ak itilizatè ki tou pre yo",
+    "activityType": "Tip Aktivite",
+    "types": {
+      "checkpoint": "Pwen kontwòl",
+      "raid": "Razya",
+      "patrol": "Patwouy",
+      "detention": "Detansyon",
+      "surveillance": "Siveyans",
+      "other": "Lòt"
+    },
+    "description": "Deskripsyon (opsyonèl)",
+    "descriptionPlaceholder": "Bay plis detay sou sa ou wè a...",
+    "photo": "Prèv Foto",
+    "photoOptionalLabel": "opsyonèl",
+    "photoOptional": "Mete yon foto ogmante konfyans rapò a epi ede verifye sitiyasyon an",
+    "photoRequired": "Yon foto obligatwa pou verifye rapò sa a",
+    "takePhoto": "Pran Foto",
+    "uploadPhoto": "Telechaje Foto",
+    "location": "Kote",
+    "locationDetected": "Kote detekte",
+    "locationFailed": "Pa t kapab detekte kote a",
+    "enableLocation": "Pèmèt Aksè",
+    "addressOptional": "Lòt kote? (opsyonèl)",
+    "addressPlaceholder": "Chèche yon adrès oswa kote...",
+    "usingCustomLocation": "Ap itilize kote pèsonalize olye de kote aktyèl ou",
+    "submitting": "Ap soumèt rapò...",
+    "success": "Rapò soumèt avèk siksè",
+    "successMessage": "Rapò ou a ap tann verifikasyon pa yon moderatè",
+    "error": "Echèk pou soumèt rapò",
+    "detectingLocation": "Ap detekte kote...",
+    "disclaimer": "Rapò ki gen foto gen pi gwo nivo konfyans. Fo rapò ka lakoz aksè limite."
+  },
+  "reportCard": {
+    "verified": "Verifye",
+    "pending": "Ap Tann Verifikasyon",
+    "hoursAgo": "{hours}è de sa",
+    "minutesAgo": "{minutes}m de sa",
+    "justNow": "Kounye a",
+    "distance": "{distance} mi lwen",
+    "confidence": {
+      "high": "Gwo konfyans",
+      "medium": "Konfyans mwayen",
+      "low": "Ti konfyans"
+    },
+    "confirmReport": "M wè sa",
+    "markInactive": "Li pa aktif ankò",
+    "markFalse": "Fo rapò"
+  },
+  "alerts": {
+    "title": "Alèt Ijans",
+    "subtitle": "Mete kontak ki pral resevwa notifikasyon nan yon ijans",
+    "accountRequired": "Kont Obligatwa",
+    "accountRequiredDescription": "Kreye yon kont pou mete kontak ijans epi itilize bouton panik la.",
+    "noContactsWarning": "Ajoute omwen yon kontak pou aktive bouton panik la",
+    "contacts": {
+      "title": "Kontak Ijans",
+      "subtitle": "Jiska 5 kontak ap resevwa notifikasyon si ou deklanche yon alèt",
+      "add": "Ajoute Kontak",
+      "name": "Non",
+      "phone": "Nimewo Telefòn",
+      "relationship": "Relasyon (opsyonèl)",
+      "empty": "Poko gen kontak ijans ajoute",
+      "nameRequired": "Non obligatwa"
+    },
+    "message": {
+      "title": "Mesaj Alèt",
+      "subtitle": "Mesaj sa a ap voye bay kontak ou yo",
+      "templates": {
+        "title": "Modèl Mesaj",
+        "default": "Posib yo te arete m pa otorite imigrasyon. Tanpri kontakte yon avoka imedyatman. Dènye kote mwen konnen pataje anba a.",
+        "family": "Ijans: Mwen bezwen èd. Otorite imigrasyon ta ka arete m. Tanpri tcheke sou mwen epi kontakte avoka fanmi nou.",
+        "legal": "IJAN: Yo arete m pa otorite imigrasyon. Tanpri kontakte avoka imigrasyon mwen deziye a ak fanmi m imedyatman."
+      },
+      "custom": "Ekri pwòp mesaj ou",
+      "customPlaceholder": "Ekri yon mesaj kontak ou yo ap rekonèt ke se ou ki voye l..."
+    },
+    "shareLocation": {
+      "title": "Pataje Kote",
+      "description": "Enkli dènye kote ou konnen nan alèt la"
+    },
+    "audio": {
+      "title": "Alèt Son",
+      "description": "Jwe yon son lè alèt voye"
+    },
+    "panicButton": {
+      "title": "Alèt Ijans",
+      "description": "Tape epi kenbe pou voye yon alèt bay tout kontak ijans ou yo",
+      "hold": "Kenbe pandan 3 segonn",
+      "sending": "Ap voye alèt...",
+      "sent": "Alèt voye",
+      "failed": "Echèk pou voye alèt"
+    },
+    "test": {
+      "button": "Voye yon alèt tès",
+      "buttonShort": "Tès",
+      "sending": "Ap voye...",
+      "sent": "Alèt tès voye nan telefòn ou",
+      "description": "Voye yon mesaj tès make [TEST] pou verifye konfigirasyon ou",
+      "tooltip": "Voye tès nan telefòn ou",
+      "noPhone": "Ajoute yon nimewo telefòn pou teste"
+    },
+    "phone": {
+      "registered": "Telefòn ou",
+      "notRegistered": "Pa gen telefòn",
+      "addPhone": "Ajoute telefòn",
+      "verified": "Verifye"
+    },
+    "history": {
+      "title": "Istwa Alèt",
+      "test": "TÈS",
+      "notified": "{count, plural, =0 {Voye ba ou} =1 {1 kontak notifye} other {# kontak notifye}}",
+      "daysAgo": "{days}j de sa",
+      "clear": "Efase",
+      "confirmClear": "Efase tout?",
+      "empty": "Pa gen alèt resan"
+    },
+    "onboarding": {
+      "title": "Gid Konfigirasyon Rapid",
+      "step1": "Ajoute jiska 5 kontak ijans ki pral resevwa notifikasyon",
+      "step2": "Pèsonalize mesaj alèt ou oswa itilize yon modèl",
+      "step3": "Aktive pataj lokalizasyon pou kontak yo konnen kote ou ye",
+      "step4": "Kenbe bouton SOS pandan 3 segonn pou voye yon alèt",
+      "dismiss": "Konprann, mèsi!"
+    }
+  },
+  "profile": {
+    "signedIn": "Konekte",
+    "guestUser": "Itilizatè Envite",
+    "signInPrompt": "Konekte pou sove preferans ou yo"
+  },
+  "auth": {
+    "welcome": "Byenveni nan MigrAlert",
+    "tagline": "Alèt sekirite kominotè",
+    "continueAnonymous": "Kontinye san kont",
+    "anonymousNote": "Ou ka wè rapò epi soumèt alèt anonim",
+    "createAccount": "Kreye Kont",
+    "createAccountNote": "Sove kontak ijans epi konekte ak fanmi",
+    "email": "Imèl",
+    "password": "Modpas",
+    "confirmPassword": "Konfime Modpas",
+    "forgotPassword": "Bliye modpas?",
+    "alreadyHaveAccount": "Ou gen yon kont deja?",
+    "noAccount": "Ou pa gen yon kont?",
+    "passwordMismatch": "Modpas yo pa matche",
+    "passwordTooShort": "Modpas dwe gen omwen 6 karaktè",
+    "loginSubtitle": "Konekte pou aksede kontak ijans ou yo",
+    "resetSubtitle": "Antre imèl ou pou resevwa yon lyen pou reyinisyalize modpas",
+    "resetPassword": "Reyinisyalize Modpas",
+    "sendResetLink": "Voye Lyen",
+    "checkEmail": "Tcheke Imèl Ou",
+    "confirmationSent": "Nou voye yon lyen konfimasyon nan {email}. Tanpri klike sou lyen nan pou verifye kont ou.",
+    "resetEmailSent": "Nou voye yon lyen reyinisyalize modpas nan {email}. Tanpri tcheke bwat resepsyon ou.",
+    "backToLogin": "Retounen nan Koneksyon",
+    "accountCreated": "Kont kreye avèk siksè!",
+    "phone": "Telefòn",
+    "verifyPhone": "Verifye Telefòn Ou",
+    "otpSent": "Nou voye yon kòd 6 chif nan {phone}",
+    "verificationCode": "Kòd Verifikasyon",
+    "verify": "Verifye",
+    "resendCode": "Ou pa resevwa yon kòd? Revoye",
+    "sendCode": "Voye Kòd",
+    "invalidPhone": "Tanpri antre yon nimewo telefòn 10 chif valid",
+    "invalidCode": "Tanpri antre yon kòd 6 chif valid",
+    "loginSuccess": "Konekte avèk siksè!"
+  },
+  "settings": {
+    "title": "Paramèt",
+    "preferences": {
+      "title": "Preferans"
+    },
+    "language": {
+      "title": "Lang",
+      "description": "Chwazi lang ou prefere a"
+    },
+    "theme": {
+      "title": "Aparans",
+      "description": "Chwazi mòd klè oswa fènwa",
+      "light": "Klè",
+      "dark": "Fènwa"
+    },
+    "notifications": {
+      "title": "Notifikasyon",
+      "push": "Notifikasyon Push",
+      "pushDescription": "Resevwa alèt pou aktivite tou pre",
+      "radius": "Reyon Alèt",
+      "radiusDescription": "Resevwa notifikasyon pou rapò nan distans sa a"
+    },
+    "privacy": {
+      "title": "Vi Prive",
+      "description": "Vi prive ou se priyorite nou",
+      "dataInfo": "Nou kolekte done minimòm epi nou pa janm swiv kote ou ye"
+    },
+    "about": {
+      "title": "Apropo",
+      "version": "Vèsyon",
+      "legal": "Resous Legal",
+      "rights": "Konnen Dwa Ou"
+    },
+    "danger": {
+      "title": "Zòn Danje",
+      "deleteAccount": "Efase Kont",
+      "deleteWarning": "Aksyon sa a pa ka defèt"
+    }
+  },
+  "moderation": {
+    "title": "Tablo Moderasyon",
+    "pendingReports": "Rapò Ap Tann",
+    "noReports": "Pa gen rapò ap tann verifikasyon",
+    "approve": "Apwouve",
+    "reject": "Rejte",
+    "reportDetails": "Detay Rapò",
+    "submittedAt": "Soumèt nan",
+    "locationMatch": "Kote Matche",
+    "locationMismatch": "Kote pa matche ak zòn deklare a"
+  },
+  "errors": {
+    "generic": "Yon bagay mal pase. Tanpri eseye ankò.",
+    "network": "Erè rezo. Tanpri tcheke koneksyon ou.",
+    "unauthorized": "Ou bezwen konekte pou fè sa.",
+    "notFound": "Resous ou mande a pa jwenn.",
+    "locationDenied": "Aksè lokalizasyon refize. Tanpri aktive sèvis lokalizasyon.",
+    "cameraDenied": "Aksè kamera refize. Tanpri aktive pèmisyon kamera."
+  },
+  "accessibility": {
+    "menu": "Ouvri meni",
+    "closeMenu": "Fèmen meni",
+    "mapMarker": "Makè rapò pou aktivite {type}",
+    "confidenceIndicator": "Nivo konfyans {level}",
+    "languageSelector": "Chwazi lang"
+  },
+  "legal": {
+    "title": "Resous Legal",
+    "call": "Rele",
+    "emergency": {
+      "title": "Nan yon Ijans",
+      "description": "Si ou oswa yon moun ou konnen yo arete, rele yon liy legal imedyatman. Ou gen dwa."
+    },
+    "sections": {
+      "hotlines": "Liy Ijans",
+      "organizations": "Òganizasyon Legal",
+      "resources": "Resous Itil"
+    },
+    "hotlines": {
+      "iceRaids": {
+        "name": "Liy United We Dream",
+        "description": "Sipò imedya pou razya ICE ak detansyon",
+        "available": "Disponib 24/7"
+      },
+      "nilc": {
+        "name": "Sipò Legal NILC",
+        "description": "Kesyon legal imigrasyon ak referans",
+        "available": "Lendi-Vandredi, 9am-5pm PT"
+      },
+      "aclu": {
+        "name": "ACLU Dwa Imigran",
+        "description": "Vyolasyon dwa sivil ak asistans legal",
+        "available": "Lendi-Vandredi, 9am-5pm ET"
+      }
+    },
+    "orgs": {
+      "nilc": "Defans legal ak resous pou imigran ki gen ti revni",
+      "aila": "Jwenn yon avoka imigrasyon kalifye tou pre ou",
+      "uwd": "Rezo sipò ak defans imigran dirije pa jèn",
+      "ian": "Repètwa sèvis legal imigrasyon gratis ak bon mache"
+    },
+    "resources": {
+      "familyPlan": {
+        "title": "Plan Preparasyon Fanmi",
+        "description": "Kreye yon plan pou fanmi ou an ka detansyon"
+      },
+      "detentionGuide": {
+        "title": "Kisa pou Fè si yo Arete Ou",
+        "description": "Gid etap pa etap pou sitiyasyon detansyon"
+      },
+      "powerOfAttorney": {
+        "title": "Pouvwa Avoka",
+        "description": "Dokiman legal pou pwoteje pitit ou ak byen ou"
+      }
+    },
+    "findLocal": {
+      "title": "Jwenn Èd Lokal",
+      "description": "Chèche sèvis legal imigrasyon gratis oswa bon mache nan zòn ou.",
+      "button": "Chèche Repètwa Legal"
+    },
+    "disclaimer": "Enfòmasyon sa a se pou rezon edikasyon sèlman e se pa konsèy legal. Konsilte ak yon avoka kalifye pou sitiyasyon espesifik ou."
+  },
+  "pwa": {
+    "banner": {
+      "title": "Enstale MigrAlert",
+      "description": "Ajoute nan ekran dakèy ou pou aksè rapid",
+      "install": "Enstale",
+      "howTo": "Kijan pou Enstale",
+      "later": "Pa Kounye a"
+    },
+    "ios": {
+      "title": "Ajoute nan Ekran Dakèy",
+      "step1": "Tape bouton Pataje nan Safari",
+      "step2": "Desann epi tape",
+      "step3": "Tape \"Ajoute\" nan kwen anwo adwat la",
+      "shareButton": "Pataje",
+      "addButton": "Ajoute nan Ekran Dakèy",
+      "gotIt": "Konprann"
+    }
+  },
+  "onboarding": {
+    "skip": "Sote",
+    "next": "Swivan",
+    "back": "Retounen",
+    "steps": {
+      "welcome": {
+        "title": "Byenveni nan MigrAlert",
+        "description": "Yon rezo sekirite kominotè ki fèt pou kenbe ou enfòme ak pwoteje. Ansanm, nou veye youn pou lòt."
+      },
+      "reports": {
+        "title": "Rapò an Tan Reyèl",
+        "description": "Gade epi pataje rapò sou aktivite imigrasyon nan zòn ou.",
+        "features": [
+          "Gade rapò sou yon kat entèaktif",
+          "Soumèt rapò pou alète kominote ou",
+          "Resevwa notifikasyon sou aktivite tou pre"
+        ]
+      },
+      "alerts": {
+        "title": "Alèt Ijans",
+        "description": "Mete kontak ijans ki pral resevwa notifikasyon si ou bezwen èd.",
+        "features": [
+          "Ajoute jiska 5 kontak ijans",
+          "Bouton SOS yon sèl tap pou ijans",
+          "Pataje kote ou ye ak kontak ou fè konfyans"
+        ]
+      },
+      "location": {
+        "title": "Aktive Lokalizasyon",
+        "description": "Aksè lokalizasyon ede nou montre ou rapò ki enpòtan tou pre ou epi pèmèt ou soumèt rapò egzak.",
+        "enableButton": "Aktive Aksè Lokalizasyon",
+        "requesting": "Ap mande aksè...",
+        "granted": "Aksè lokalizasyon aktive!",
+        "denied": "Aksè lokalizasyon te refize. Ou ka aktive li pita nan paramèt aparèy ou.",
+        "continueAnyway": "Kontinye san lokalizasyon",
+        "later": "Petèt Pita"
+      },
+      "account": {
+        "title": "Kreye yon Kont",
+        "description": "Yon kont pèmèt ou sove kontak ijans, aksede yo nan nenpòt aparèy, epi konekte ak fanmi ou.",
+        "createButton": "Kreye Kont",
+        "skipButton": "Kontinye kòm Envite"
+      }
+    }
+  },
+  "rights": {
+    "title": "Konnen Dwa Ou",
+    "selectScenario": "Chwazi yon Sitiyasyon",
+    "whatToSay": "Kisa pou Di",
+    "dos": "Fè",
+    "donts": "Pa Fè",
+    "card": {
+      "title": "Dwa Konstitisyonèl Ou"
+    },
+    "core": [
+      "Ou gen dwa rete an silans",
+      "Ou gen dwa refize yon rechèch",
+      "Ou gen dwa pale ak yon avoka",
+      "Ou gen dwa gen yon odyans devan yon jij",
+      "Ou pa oblije siyen anyen ou pa konprann"
+    ],
+    "scenarios": {
+      "street": {
+        "title": "Nan Lari",
+        "say": "Mwen ap egzèse dwa mwen pou rete an silans. Mwen pa dakò pou yon rechèch.",
+        "dos": [
+          "Rete kalm epi kenbe men ou vizib",
+          "Mande si ou lib pou ale",
+          "Bay non ou si yo mande (nan kèk eta)",
+          "Memorize nimewo plak ak nimewo machin patwouy"
+        ],
+        "donts": [
+          "Kouri oswa reziste, menm si ou kwè li enjis",
+          "Bay manti oswa bay fo dokiman",
+          "Reponn kesyon sou estati imigrasyon ou"
+        ]
+      },
+      "home": {
+        "title": "Lakay",
+        "say": "Mwen pa dakò pou ou antre. Tanpri glise manda a anba pòt la.",
+        "dos": [
+          "Mande pou wè yon manda siyen pa yon jij",
+          "Kenbe pòt la fèmen - pale atravè li",
+          "Li manda a ak atansyon - tcheke non ak adrès",
+          "Gen yon plan fanmi pare"
+        ],
+        "donts": [
+          "Ouvri pòt la sof si yo gen yon manda jidisyè valid",
+          "Siyen okenn dokiman san yon avoka",
+          "Reponn kesyon san yon avoka prezan"
+        ]
+      },
+      "checkpoint": {
+        "title": "Nan Pwen Kontwòl",
+        "say": "Mwen chwazi rete an silans. Èske mwen lib pou ale?",
+        "dos": [
+          "Ralanti epi kanpe nan pwen kontwòl la",
+          "Kenbe men ou sou volan an",
+          "Bay lisans ak anrejistreman si yo mande",
+          "Rete kalm epi poli"
+        ],
+        "donts": [
+          "Eseye vire oswa evite pwen kontwòl la",
+          "Reponn kesyon sou sitwayènte oswa estati imigrasyon",
+          "Dakò pou yon rechèch nan machin ou"
+        ]
+      },
+      "workplace": {
+        "title": "Nan Travay",
+        "say": "Mwen bezwen pale ak anplwayè mwen ak yon avoka anvan mwen reponn kesyon.",
+        "dos": [
+          "Rete kalm epi pa kouri",
+          "Mande pou wè manda a ak ki zòn li kouvri",
+          "Kontakte reprezantan sendika ou si ou gen youn",
+          "Konnen enfòmasyon kontak ijans ou"
+        ],
+        "donts": [
+          "Bay fo dokiman oswa enfòmasyon",
+          "Reponn kesyon sou kòlèg travay",
+          "Siyen anyen san li ak konprann li"
+        ]
+      }
+    },
+    "remember": {
+      "title": "Sonje",
+      "description": "Tout sa ou di ka itilize kont ou. Egzèse dwa ou se pa yon admisyon koupab."
+    },
+    "needHelp": {
+      "title": "Bezwen Èd Legal?",
+      "description": "Jwenn resous legal ak liy ijans"
+    }
+  }
+}

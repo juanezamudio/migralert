@@ -80,10 +80,13 @@ export function useReports(options: UseReportsOptions = {}): UseReportsReturn {
     [fetchReports]
   );
 
-  // Initial fetch when location becomes available
+  // Initial fetch when location becomes available, or clear loading if location fails
   useEffect(() => {
     if (location) {
       fetchReports();
+    } else {
+      // If location is null/undefined, clear loading state
+      setLoading(false);
     }
   }, [location, fetchReports]);
 

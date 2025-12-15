@@ -82,7 +82,36 @@ export default function AlertsPage() {
   // Alert config state
   const [message, setMessage] = useState("");
   const [shareLocation, setShareLocation] = useState(true);
-  const [configChanged, setConfigChanged] = useState(false);
+  const [configSaving, setConfigSaving] = useState(false);
+
+  // Template messages in all languages for comparison
+  const templateMessages = {
+    default: {
+      en: "I may have been detained by immigration authorities. Please contact a lawyer immediately. My last known location is shared below.",
+      es: "Es posible que haya sido detenido por autoridades de inmigracion. Por favor contacta a un abogado inmediatamente. Mi ultima ubicacion conocida esta compartida abajo.",
+      ht: "Posib yo te arete m pa otorite imigrasyon. Tanpri kontakte yon avoka imedyatman. Dènye kote mwen konnen pataje anba a.",
+    },
+    family: {
+      en: "Emergency: I need help. Immigration authorities may have detained me. Please check on me and contact our family lawyer.",
+      es: "Emergencia: Necesito ayuda. Las autoridades de inmigracion pueden haberme detenido. Por favor verificame y contacta a nuestro abogado familiar.",
+      ht: "Ijans: Mwen bezwen èd. Otorite imigrasyon ta ka arete m. Tanpri tcheke sou mwen epi kontakte avoka fanmi nou.",
+    },
+    legal: {
+      en: "URGENT: I am being detained by immigration enforcement. Please contact my designated immigration attorney and family immediately.",
+      es: "URGENTE: Estoy siendo detenido por autoridades de inmigracion. Por favor contacta a mi abogado de inmigracion designado y a mi familia inmediatamente.",
+      ht: "IJAN: Yo arete m pa otorite imigrasyon. Tanpri kontakte avoka imigrasyon mwen deziye a ak fanmi m imedyatman.",
+    },
+  };
+
+  // Detect which template the message matches (if any)
+  const getMatchingTemplateKey = (msg: string): keyof typeof templateMessages | null => {
+    for (const [key, translations] of Object.entries(templateMessages)) {
+      if (Object.values(translations).includes(msg)) {
+        return key as keyof typeof templateMessages;
+      }
+    }
+    return null;
+  };
 
   // Panic button state
   const [isPressing, setIsPressing] = useState(false);
@@ -156,14 +185,63 @@ export default function AlertsPage() {
   };
   const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const initializedRef = useRef(false);
+
+  // Get current language's default template
+  const currentDefaultTemplate = t("alerts.message.templates.default");
 
   // Initialize alert config from data
   useEffect(() => {
-    if (alertConfig) {
+    if (alertConfig && !initializedRef.current) {
+      initializedRef.current = true;
       setMessage(alertConfig.message);
       setShareLocation(alertConfig.share_location);
     }
   }, [alertConfig]);
+
+  // Update message when language changes (if using a template)
+  useEffect(() => {
+    if (!message) return;
+
+    const templateKey = getMatchingTemplateKey(message);
+    if (templateKey) {
+      // Message matches a template - update to current language version
+      const newMessage = t(`alerts.message.templates.${templateKey}`);
+      if (newMessage !== message) {
+        setMessage(newMessage);
+      }
+    }
+  }, [currentDefaultTemplate]); // currentDefaultTemplate changes when language changes
+
+  // Auto-save config when message or shareLocation changes (with debounce)
+  useEffect(() => {
+    // Don't auto-save during initial load
+    if (!initializedRef.current || !alertConfig) return;
+
+    // Clear existing timeout
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+
+    // Check if anything actually changed
+    if (message === alertConfig.message && shareLocation === alertConfig.share_location) {
+      return;
+    }
+
+    // Debounce save by 1 second
+    autoSaveTimeoutRef.current = setTimeout(async () => {
+      setConfigSaving(true);
+      await updateAlertConfig({ message, share_location: shareLocation });
+      setConfigSaving(false);
+    }, 1000);
+
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, [message, shareLocation, alertConfig, updateAlertConfig]);
 
   const loading = authLoading || contactsLoading;
 
@@ -247,12 +325,6 @@ export default function AlertsPage() {
     setFormError(null);
   };
 
-  const handleSaveConfig = async () => {
-    const result = await updateAlertConfig({ message, share_location: shareLocation });
-    if (!result.error) {
-      setConfigChanged(false);
-    }
-  };
 
   // Panic button handlers
   const HOLD_DURATION = 3000; // 3 seconds
@@ -379,13 +451,14 @@ export default function AlertsPage() {
     return () => {
       if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
       if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (autoSaveTimeoutRef.current) clearTimeout(autoSaveTimeoutRef.current);
     };
   }, []);
 
-  // Not logged in view
+  // Not logged in view - show grayed out version with login prompt
   if (!authLoading && !user) {
     return (
-      <div className="min-h-screen bg-background pb-20">
+      <div className="min-h-screen bg-background pb-20 relative">
         <Header
           title={t("alerts.title")}
           leftAction={
@@ -398,12 +471,13 @@ export default function AlertsPage() {
           }
         />
 
-        <main className="pt-16 px-4 max-w-lg mx-auto">
+        {/* Grayed out preview of actual alerts page */}
+        <main className="pt-16 px-4 max-w-lg mx-auto opacity-40 pointer-events-none select-none">
           {/* Info Card */}
-          <Card className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10">
+          <Card className="mb-4 border-status-info/30 bg-status-info-muted">
             <CardContent className="pt-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-status-info/20 flex items-center justify-center flex-shrink-0">
                   <Lightbulb className="w-4 h-4 text-status-info" />
                 </div>
                 <p className="flex-1 text-sm text-foreground leading-relaxed pt-1">
@@ -413,43 +487,108 @@ export default function AlertsPage() {
             </CardContent>
           </Card>
 
-          <Card className="mb-6 border-accent-primary">
+          {/* Panic Button Preview */}
+          <div className="mb-6">
+            <div className="w-full py-8 rounded-[var(--radius-lg)] bg-status-danger/10 border-2 border-status-danger">
+              <div className="flex flex-col items-center justify-center">
+                <span className="text-status-danger text-4xl font-bold">SOS</span>
+                <span className="text-status-danger/70 text-sm mt-1">
+                  {t("alerts.panicButton.hold")}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Share Location Toggle Preview */}
+          <Card className="mb-4">
             <CardContent className="pt-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent-primary-muted flex items-center justify-center flex-shrink-0">
-                  <Lock className="w-5 h-5 text-accent-primary" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-foreground mb-1">
-                    {t("alerts.accountRequired")}
-                  </h3>
-                  <p className="text-sm text-foreground-secondary mb-3">
-                    {t("alerts.accountRequiredDescription")}
-                  </p>
-                  <Link href="/auth">
-                    <Button size="sm">{t("auth.createAccount")}</Button>
-                  </Link>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 text-foreground-muted" />
+                    <div>
+                      <p className="font-medium text-foreground">
+                        {t("alerts.shareLocation.title")}
+                      </p>
+                      <p className="text-sm text-foreground-secondary">
+                        {t("alerts.shareLocation.description")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-11 h-6 rounded-full bg-accent-primary relative">
+                    <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 translate-x-5" />
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Preview sections (disabled) */}
-          <Card className="mb-4 opacity-50 pointer-events-none">
+          {/* Emergency Contacts Preview */}
+          <Card className="mb-4">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
                 <User className="w-4 h-4" />
                 {t("alerts.contacts.title")}
               </CardTitle>
+              <CardDescription>{t("alerts.contacts.subtitle")}</CardDescription>
             </CardHeader>
+            <CardContent>
+              <div className="text-center py-6 text-foreground-muted text-sm">
+                {t("alerts.contacts.empty")}
+              </div>
+              <Button variant="secondary" className="w-full">
+                <Plus className="w-4 h-4 mr-2" />
+                {t("alerts.contacts.add")}
+              </Button>
+            </CardContent>
           </Card>
 
-          <div className="text-center mb-4 opacity-50">
-            <div className="w-32 h-32 rounded-full bg-status-danger/20 border-4 border-status-danger/50 flex items-center justify-center mx-auto">
-              <span className="text-status-danger text-2xl font-bold">SOS</span>
-            </div>
-          </div>
+          {/* Alert Message Preview */}
+          <Card className="mb-4">
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <MessageSquare className="w-4 h-4" />
+                {t("alerts.message.title")}
+              </CardTitle>
+              <CardDescription>{t("alerts.message.subtitle")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <textarea
+                className="w-full p-3 rounded-[var(--radius-md)] border border-border bg-background text-foreground text-sm resize-none"
+                rows={3}
+                defaultValue={t("alerts.message.templates.default")}
+                readOnly
+              />
+            </CardContent>
+          </Card>
         </main>
+
+        {/* Login overlay */}
+        <div className="fixed inset-0 flex items-center justify-center z-40 pointer-events-none">
+          <Card className="mx-4 border-accent-primary shadow-lg pointer-events-auto">
+            <CardContent className="pt-6 pb-6">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-14 h-14 rounded-full bg-accent-primary-muted flex items-center justify-center mb-4">
+                  <Lock className="w-7 h-7 text-accent-primary" />
+                </div>
+                <h3 className="font-semibold text-lg text-foreground mb-2">
+                  {t("alerts.accountRequired")}
+                </h3>
+                <p className="text-sm text-foreground-secondary mb-5 max-w-xs">
+                  {t("alerts.accountRequiredDescription")}
+                </p>
+                <div className="flex gap-3">
+                  <Link href="/auth">
+                    <Button>{t("auth.createAccount")}</Button>
+                  </Link>
+                  <Link href="/auth">
+                    <Button variant="secondary">{t("common.login")}</Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <BottomNav />
       </div>
@@ -483,10 +622,10 @@ export default function AlertsPage() {
       <main className="pt-16 px-4 max-w-lg mx-auto">
         {/* Info Card - Above SOS */}
         {showInfoCard && (
-          <Card className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10">
+          <Card className="mb-4 border-status-info/30 bg-status-info-muted">
             <CardContent className="pt-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-status-info/20 flex items-center justify-center flex-shrink-0">
                   <Lightbulb className="w-4 h-4 text-status-info" />
                 </div>
                 <p className="flex-1 text-sm text-foreground leading-relaxed pt-1">
@@ -513,11 +652,12 @@ export default function AlertsPage() {
             onTouchEnd={endHold}
             disabled={contacts.length === 0 || alertSending}
             className={cn(
-              "w-full py-8 rounded-[var(--radius-lg)] relative overflow-hidden transition-all",
+              "w-full py-8 rounded-[var(--radius-lg)] relative overflow-hidden transition-all select-none",
               contacts.length === 0 || alertSending
                 ? "opacity-50 cursor-not-allowed bg-status-danger/10 border-2 border-status-danger/30"
                 : "bg-status-danger/10 border-2 border-status-danger hover:bg-status-danger/20 active:scale-[0.98]"
             )}
+            style={{ WebkitTouchCallout: "none", WebkitUserSelect: "none" }}
           >
             {/* Progress fill */}
             {isPressing && (
@@ -616,10 +756,7 @@ export default function AlertsPage() {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    setShareLocation(!shareLocation);
-                    setConfigChanged(true);
-                  }}
+                  onClick={() => setShareLocation(!shareLocation)}
                   className={cn(
                     "w-11 h-6 rounded-full relative transition-colors",
                     shareLocation ? "bg-accent-primary" : "bg-surface-hover"
@@ -871,48 +1008,39 @@ export default function AlertsPage() {
                 className="w-full p-3 rounded-[var(--radius-md)] border border-border bg-background text-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent-primary"
                 rows={4}
                 value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  setConfigChanged(true);
-                }}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder={t("alerts.message.customPlaceholder")}
               />
               {/* Message templates */}
               <div className="space-y-2">
-                <p className="text-xs text-foreground-muted">{t("alerts.message.templates.title")}</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-foreground-muted">{t("alerts.message.templates.title")}</p>
+                  {configSaving && (
+                    <span className="text-xs text-foreground-muted flex items-center gap-1">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      {t("common.save")}...
+                    </span>
+                  )}
+                </div>
                 <button
-                  onClick={() => {
-                    setMessage(t("alerts.message.templates.default"));
-                    setConfigChanged(true);
-                  }}
+                  onClick={() => setMessage(t("alerts.message.templates.default"))}
                   className="w-full text-left p-2 rounded-[var(--radius-md)] border border-border text-xs text-foreground-secondary hover:bg-surface-hover transition-colors"
                 >
                   {t("alerts.message.templates.default")}
                 </button>
                 <button
-                  onClick={() => {
-                    setMessage(t("alerts.message.templates.family"));
-                    setConfigChanged(true);
-                  }}
+                  onClick={() => setMessage(t("alerts.message.templates.family"))}
                   className="w-full text-left p-2 rounded-[var(--radius-md)] border border-border text-xs text-foreground-secondary hover:bg-surface-hover transition-colors"
                 >
                   {t("alerts.message.templates.family")}
                 </button>
                 <button
-                  onClick={() => {
-                    setMessage(t("alerts.message.templates.legal"));
-                    setConfigChanged(true);
-                  }}
+                  onClick={() => setMessage(t("alerts.message.templates.legal"))}
                   className="w-full text-left p-2 rounded-[var(--radius-md)] border border-border text-xs text-foreground-secondary hover:bg-surface-hover transition-colors"
                 >
                   {t("alerts.message.templates.legal")}
                 </button>
               </div>
-              {configChanged && (
-                <Button size="sm" onClick={handleSaveConfig}>
-                  {t("common.save")}
-                </Button>
-              )}
 
               {/* Phone number status */}
               <div className="pt-3 border-t border-border">

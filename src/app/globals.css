@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-/* MigrAlert Dark Theme - Citizen-inspired */
-:root {
-  /* Core colors - dark mode only */
+/* MigrAlert Theme System */
+/* Dark theme (default) */
+:root,
+[data-theme="dark"] {
+  /* Core colors */
   --background: #0D0D0F;
   --background-secondary: #16161A;
   --background-tertiary: #1E1E24;
@@ -44,6 +46,7 @@
 
   /* Map-specific */
   --map-overlay: rgba(13, 13, 15, 0.85);
+  --map-style: dark-v11;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -55,6 +58,62 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-full: 9999px;
+
+  color-scheme: dark;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  /* Core colors */
+  --background: #FFFFFF;
+  --background-secondary: #F5F5F7;
+  --background-tertiary: #EBEBED;
+
+  /* Surface colors for cards, modals */
+  --surface: #FFFFFF;
+  --surface-hover: #F5F5F7;
+  --surface-active: #EBEBED;
+
+  /* Border colors */
+  --border: #E0E0E2;
+  --border-light: #D0D0D2;
+
+  /* Text colors */
+  --foreground: #1A1A1F;
+  --foreground-secondary: #5A5A62;
+  --foreground-muted: #8A8A92;
+
+  /* Accent colors - slightly darker for light mode readability */
+  --accent-primary: #E85A2A;
+  --accent-primary-hover: #D04A1A;
+  --accent-primary-muted: rgba(232, 90, 42, 0.12);
+
+  /* Status colors - adjusted for light mode */
+  --status-danger: #DC2626;
+  --status-danger-muted: rgba(220, 38, 38, 0.1);
+  --status-warning: #D97706;
+  --status-warning-muted: rgba(217, 119, 6, 0.1);
+  --status-success: #059669;
+  --status-success-muted: rgba(5, 150, 105, 0.1);
+  --status-info: #2563EB;
+  --status-info-muted: rgba(37, 99, 235, 0.1);
+
+  /* Confidence score colors */
+  --confidence-high: #059669;
+  --confidence-medium: #D97706;
+  --confidence-low: #DC2626;
+  --confidence-pending: #8A8A92;
+
+  /* Map-specific */
+  --map-overlay: rgba(255, 255, 255, 0.85);
+  --map-style: light-v11;
+
+  /* Shadows - lighter for light mode */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
+
+  color-scheme: light;
 }
 
 @theme inline {
@@ -95,10 +154,6 @@
   box-sizing: border-box;
 }
 
-html {
-  color-scheme: dark;
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -137,23 +192,14 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Hide scrollbars but allow scrolling */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground-muted);
+*::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }
 
 /* Selection styling */

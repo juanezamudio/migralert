@@ -7,59 +7,39 @@ This document outlines potential features and improvements for the MigrAlert app
 ## Current Status (Completed Features)
 
 ### Core Pages
-- **Map View** - Interactive Mapbox map with report markers, real-time updates, report detail bottom sheet with user interactions (confirm/inactive/false)
-- **Report Submission** - Location detection with reverse geocoding, optional address override with autocomplete, 6 activity types, photo upload with compression, description with character limit
-- **Alerts** - Emergency contacts management, panic button, alert message templates
+- **Map View** - Interactive Mapbox map with report markers, real-time updates, report detail modal with user interactions (confirm/inactive/false)
+- **Report Submission** - Location detection with reverse geocoding, optional address override with autocomplete, 6 activity types, optional photo upload with compression, description with character limit
+- **Alerts** - Emergency contacts management, panic button with hold-to-activate, alert message templates with auto-save, test alerts
 - **Auth** - Email and phone authentication, signup, login, password reset, OTP verification
-- **Profile/Settings** - User profile, phone verification, language switcher (EN/ES), privacy notice
+- **Profile/Settings** - User profile, phone verification, language switcher, theme toggle, privacy notice
+- **Legal Resources** - Emergency hotlines with click-to-call, legal organizations directory, helpful resources links, find local help
+- **Know Your Rights** - Interactive scenario selector (street, home, checkpoint, workplace), do's and don'ts, key phrases to say, constitutional rights card
 
 ### Technical Infrastructure
 - Supabase backend (auth, database, storage)
 - Real-time subscriptions for report updates
 - PostGIS for geospatial queries
 - Mapbox for maps and geocoding
-- i18n support (English/Spanish)
-- Dark theme UI
+- i18n support (English, Spanish, Haitian Creole)
+- Light/Dark theme with user preference persistence
+- PWA support with service worker and install prompts
+- Onboarding flow for first-time users
+
+### Recent Updates (December 2024)
+- [x] **Legal Resources Page** (`/legal`) - Emergency hotlines, legal organizations, resources
+- [x] **Know Your Rights Page** (`/rights`) - Scenario-based guidance with do's/don'ts
+- [x] **Onboarding Flow** - 5-step modal overlay on map with language switcher
+- [x] **PWA Support** - Service worker, offline caching, install prompts (Android native + iOS instructions)
+- [x] **Light Mode** - Theme toggle in settings, CSS variables for both themes
+- [x] **Haitian Creole** - Full translation support (3 languages total)
+- [x] **Photos Optional** - Report submission no longer requires photo evidence
+- [x] **Report Modal** - Changed from bottom sheet to modal for better UX
 
 ---
 
 ## Priority 1: High Impact Features
 
-### 1. Legal Resources Page
-**Why:** Core to the app's mission - users need quick access to legal help.
-
-**Features:**
-- List of immigration legal aid organizations
-- "Know Your Rights" quick reference cards
-- Emergency legal hotline numbers
-- Downloadable PDF resources
-- Location-based legal aid finder
-
-**Implementation:**
-- Create `/src/app/legal/page.tsx`
-- Add content in both EN/ES
-- Link from profile page "Legal Resources" button
-
----
-
-### 2. Know Your Rights Page
-**Why:** Users need to know their rights during an encounter.
-
-**Features:**
-- Step-by-step guidance for different scenarios
-- "What to do if stopped" checklist
-- Rights during home visits
-- Rights at checkpoints
-- Wallet-sized digital card with key phrases
-
-**Implementation:**
-- Create `/src/app/rights/page.tsx`
-- Visual, easy-to-scan format
-- Available offline (critical)
-
----
-
-### 3. Moderation Dashboard
+### 1. Moderation Dashboard
 **Why:** Reports need verification before being shown as "verified" to maintain trust.
 
 **Features:**
@@ -83,7 +63,7 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ## Priority 2: User Experience Improvements
 
-### 4. Push Notifications
+### 2. Push Notifications
 **Why:** Users need real-time alerts for nearby activity.
 
 **Features:**
@@ -96,28 +76,11 @@ This document outlines potential features and improvements for the MigrAlert app
 - Set up Firebase Cloud Messaging or OneSignal
 - Create notification preferences in profile
 - Background sync for location updates
-- Service worker for push handling
+- Service worker for push handling (already in place)
 
 ---
 
-### 5. Onboarding Flow
-**Why:** First-time users need to understand how the app works.
-
-**Screens:**
-1. Welcome + app purpose
-2. How reports work (view & submit)
-3. Emergency alerts explanation
-4. Location permission request (with context)
-5. Optional account creation prompt
-
-**Implementation:**
-- Create `/src/app/onboarding/page.tsx`
-- Store completion in localStorage
-- Show only on first visit
-
----
-
-### 6. Distance Display on Reports
+### 3. Distance Display on Reports
 **Why:** Users want to know how close a report is to them.
 
 **Features:**
@@ -128,30 +91,11 @@ This document outlines potential features and improvements for the MigrAlert app
 **Implementation:**
 - Distance already calculated in `reports_within_radius` RPC
 - Add `distance_miles` to Report type
-- Display in bottom sheet and any list views
+- Display in modal and any list views
 
 ---
 
-## Priority 3: Technical Improvements
-
-### 7. PWA Support (Progressive Web App)
-**Why:** Users need the app to work offline and be installable.
-
-**Features:**
-- Installable on home screen
-- Offline access to Know Your Rights content
-- Cached map tiles for recent area
-- Queue reports when offline, sync when online
-
-**Implementation:**
-- Add `manifest.json`
-- Set up service worker with Workbox
-- Cache critical assets and pages
-- Implement background sync for offline reports
-
----
-
-### 8. Report Expiration UI
+### 4. Report Expiration UI
 **Why:** Reports expire after a set time, users should see this clearly.
 
 **Features:**
@@ -167,7 +111,7 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ---
 
-### 9. Enhanced Map Features
+### 5. Enhanced Map Features
 **Why:** Better map UX helps users understand the situation.
 
 **Features:**
@@ -184,9 +128,9 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ---
 
-## Priority 4: Future Considerations
+## Priority 3: Future Considerations
 
-### 10. Family/Group Linking
+### 6. Family/Group Linking
 **Why:** Families want to stay connected and share alerts.
 
 **Features:**
@@ -197,7 +141,7 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ---
 
-### 11. Community Verification
+### 7. Community Verification
 **Why:** Crowdsourced verification improves report accuracy.
 
 **Features:**
@@ -208,7 +152,7 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ---
 
-### 12. Analytics Dashboard (Admin)
+### 8. Analytics Dashboard (Admin)
 **Why:** Understand app usage and report patterns.
 
 **Features:**
@@ -219,7 +163,7 @@ This document outlines potential features and improvements for the MigrAlert app
 
 ---
 
-### 13. Accessibility Improvements
+### 9. Accessibility Improvements
 **Why:** App should be usable by everyone.
 
 **Features:**
@@ -227,6 +171,22 @@ This document outlines potential features and improvements for the MigrAlert app
 - High contrast mode option
 - Larger text option
 - Voice-activated panic button
+
+---
+
+### 10. Offline Report Queue
+**Why:** Users may need to submit reports in areas with poor connectivity.
+
+**Features:**
+- Queue reports when offline
+- Auto-sync when connection restored
+- Visual indicator of pending uploads
+- Retry mechanism for failed uploads
+
+**Implementation:**
+- Use IndexedDB for offline storage
+- Background sync API
+- Service worker already in place
 
 ---
 
@@ -252,9 +212,20 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx
 
 ---
 
+## Technical Debt & Cleanup
+
+- [ ] Add comprehensive error boundaries
+- [ ] Implement proper loading skeletons
+- [ ] Add unit tests for critical hooks
+- [ ] Add E2E tests for auth and report flows
+- [ ] Optimize bundle size
+- [ ] Add proper TypeScript strict mode compliance
+
+---
+
 ## Notes
 
-- All features should maintain EN/ES language support
+- All features should maintain EN/ES/HT language support
 - Privacy-first approach - minimal data collection
 - Performance critical - app must work on low-end devices
 - Offline capability important for areas with poor connectivity

@@ -53,6 +53,8 @@
     "description": "Description (optional)",
     "descriptionPlaceholder": "Provide additional details about what you observed...",
     "photo": "Photo Evidence",
+    "photoOptionalLabel": "optional",
+    "photoOptional": "Adding a photo increases report credibility and helps verify the situation",
     "photoRequired": "A photo is required to verify this report",
     "takePhoto": "Take Photo",
     "uploadPhoto": "Upload Photo",
@@ -68,7 +70,7 @@
     "successMessage": "Your report is pending verification by a moderator",
     "error": "Failed to submit report",
     "detectingLocation": "Detecting location...",
-    "disclaimer": "Reports require photo evidence and location verification. False reports may result in restricted access."
+    "disclaimer": "Reports with photos have higher confidence scores. False reports may result in restricted access."
   },
   "reportCard": {
     "verified": "Verified",
@@ -205,9 +207,18 @@
   },
   "settings": {
     "title": "Settings",
+    "preferences": {
+      "title": "Preferences"
+    },
     "language": {
       "title": "Language",
       "description": "Choose your preferred language"
+    },
+    "theme": {
+      "title": "Appearance",
+      "description": "Choose light or dark mode",
+      "light": "Light",
+      "dark": "Dark"
     },
     "notifications": {
       "title": "Notifications",
@@ -258,5 +269,211 @@
     "mapMarker": "Report marker for {type} activity",
     "confidenceIndicator": "{level} confidence level",
     "languageSelector": "Select language"
+  },
+  "legal": {
+    "title": "Legal Resources",
+    "call": "Call",
+    "emergency": {
+      "title": "In an Emergency",
+      "description": "If you or someone you know is being detained, call a legal hotline immediately. You have rights."
+    },
+    "sections": {
+      "hotlines": "Emergency Hotlines",
+      "organizations": "Legal Organizations",
+      "resources": "Helpful Resources"
+    },
+    "hotlines": {
+      "iceRaids": {
+        "name": "United We Dream Hotline",
+        "description": "Immediate support for ICE raids and detention",
+        "available": "Available 24/7"
+      },
+      "nilc": {
+        "name": "NILC Legal Support",
+        "description": "Immigration legal questions and referrals",
+        "available": "Mon-Fri, 9am-5pm PT"
+      },
+      "aclu": {
+        "name": "ACLU Immigrants' Rights",
+        "description": "Civil rights violations and legal assistance",
+        "available": "Mon-Fri, 9am-5pm ET"
+      }
+    },
+    "orgs": {
+      "nilc": "Legal advocacy and resources for low-income immigrants",
+      "aila": "Find a qualified immigration lawyer near you",
+      "uwd": "Youth-led immigrant advocacy and support network",
+      "ian": "Directory of free and low-cost immigration legal services"
+    },
+    "resources": {
+      "familyPlan": {
+        "title": "Family Preparedness Plan",
+        "description": "Create a plan for your family in case of detention"
+      },
+      "detentionGuide": {
+        "title": "What to Do if Detained",
+        "description": "Step-by-step guide for detention situations"
+      },
+      "powerOfAttorney": {
+        "title": "Power of Attorney",
+        "description": "Legal documents to protect your children and assets"
+      }
+    },
+    "findLocal": {
+      "title": "Find Local Help",
+      "description": "Search for free or low-cost immigration legal services in your area.",
+      "button": "Search Legal Directory"
+    },
+    "disclaimer": "This information is for educational purposes only and is not legal advice. Consult with a qualified attorney for your specific situation."
+  },
+  "pwa": {
+    "banner": {
+      "title": "Install MigrAlert",
+      "description": "Add to your home screen for quick access",
+      "install": "Install",
+      "howTo": "How to Install",
+      "later": "Not Now"
+    },
+    "ios": {
+      "title": "Add to Home Screen",
+      "step1": "Tap the Share button in Safari",
+      "step2": "Scroll down and tap",
+      "step3": "Tap \"Add\" in the top right corner",
+      "shareButton": "Share",
+      "addButton": "Add to Home Screen",
+      "gotIt": "Got It"
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "back": "Back",
+    "steps": {
+      "welcome": {
+        "title": "Welcome to MigrAlert",
+        "description": "A community-powered safety network designed to keep you informed and protected. Together, we look out for each other."
+      },
+      "reports": {
+        "title": "Real-Time Reports",
+        "description": "See and share reports about immigration enforcement activity in your area.",
+        "features": [
+          "View reports on an interactive map",
+          "Submit reports to alert your community",
+          "Get notified about nearby activity"
+        ]
+      },
+      "alerts": {
+        "title": "Emergency Alerts",
+        "description": "Set up emergency contacts who will be notified if you need help.",
+        "features": [
+          "Add up to 5 emergency contacts",
+          "One-tap SOS button for emergencies",
+          "Share your location with trusted contacts"
+        ]
+      },
+      "location": {
+        "title": "Enable Location",
+        "description": "Location access helps us show you relevant reports nearby and lets you submit accurate reports.",
+        "enableButton": "Enable Location Access",
+        "requesting": "Requesting access...",
+        "granted": "Location access enabled!",
+        "denied": "Location access was denied. You can enable it later in your device settings.",
+        "continueAnyway": "Continue without location",
+        "later": "Maybe Later"
+      },
+      "account": {
+        "title": "Create an Account",
+        "description": "An account lets you save emergency contacts, access them from any device, and connect with your family.",
+        "createButton": "Create Account",
+        "skipButton": "Continue as Guest"
+      }
+    }
+  },
+  "rights": {
+    "title": "Know Your Rights",
+    "selectScenario": "Select a Situation",
+    "whatToSay": "What to Say",
+    "dos": "Do",
+    "donts": "Don't",
+    "card": {
+      "title": "Your Constitutional Rights"
+    },
+    "core": [
+      "You have the right to remain silent",
+      "You have the right to refuse a search",
+      "You have the right to speak to a lawyer",
+      "You have the right to a hearing before a judge",
+      "You do not have to sign anything you don't understand"
+    ],
+    "scenarios": {
+      "street": {
+        "title": "On the Street",
+        "say": "I am exercising my right to remain silent. I do not consent to a search.",
+        "dos": [
+          "Stay calm and keep your hands visible",
+          "Ask if you are free to leave",
+          "Provide your name if asked (in some states)",
+          "Memorize badge numbers and patrol car numbers"
+        ],
+        "donts": [
+          "Run away or resist, even if you believe it's unjust",
+          "Lie or provide false documents",
+          "Answer questions about your immigration status"
+        ]
+      },
+      "home": {
+        "title": "At Home",
+        "say": "I do not consent to your entry. Please slide the warrant under the door.",
+        "dos": [
+          "Ask to see a warrant signed by a judge",
+          "Keep the door closed - speak through it",
+          "Read the warrant carefully - check name and address",
+          "Have a family plan ready"
+        ],
+        "donts": [
+          "Open the door unless they have a valid judicial warrant",
+          "Sign any documents without a lawyer",
+          "Answer questions without an attorney present"
+        ]
+      },
+      "checkpoint": {
+        "title": "At Checkpoint",
+        "say": "I choose to remain silent. Am I free to go?",
+        "dos": [
+          "Slow down and stop at the checkpoint",
+          "Keep your hands on the steering wheel",
+          "Provide license and registration if asked",
+          "Remain calm and polite"
+        ],
+        "donts": [
+          "Try to turn around or evade the checkpoint",
+          "Answer questions about citizenship or immigration status",
+          "Consent to a search of your vehicle"
+        ]
+      },
+      "workplace": {
+        "title": "At Work",
+        "say": "I need to speak with my employer and an attorney before answering questions.",
+        "dos": [
+          "Remain calm and do not run",
+          "Ask to see the warrant and what areas it covers",
+          "Contact your union representative if you have one",
+          "Know your emergency contact information"
+        ],
+        "donts": [
+          "Provide false documents or information",
+          "Answer questions about coworkers",
+          "Sign anything without reading and understanding it"
+        ]
+      }
+    },
+    "remember": {
+      "title": "Remember",
+      "description": "Anything you say can be used against you. Exercising your rights is not an admission of guilt."
+    },
+    "needHelp": {
+      "title": "Need Legal Help?",
+      "description": "Find legal resources and emergency hotlines"
+    }
   }
 }

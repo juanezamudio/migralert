@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { cn } from "@/lib/utils";
 import type { Report, GeoLocation } from "@/types";
 import { Locate, RefreshCw, ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
+import { useTheme } from "@/hooks";
 
 // Set Mapbox access token
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
@@ -103,6 +104,7 @@ export function MapView({
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { theme, mounted: themeMounted } = useTheme();
 
   // Use US_CENTER as default when no user location
   const defaultCenter: GeoLocation = {
@@ -111,6 +113,11 @@ export function MapView({
   };
 
   const mapCenter = center || defaultCenter;
+
+  // Map style based on theme
+  const mapStyle = theme === "light"
+    ? "mapbox://styles/mapbox/light-v11"
+    : "mapbox://styles/mapbox/dark-v11";
 
   // Ref to track if we're currently resetting (prevents infinite loop)
   const isResettingRef = useRef(false);
@@ -179,12 +186,12 @@ export function MapView({
 
   // Initialize map
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    if (!mapContainer.current || map.current || !themeMounted) return;
 
     // Configure initial view based on whether user location is available
     const mapOptions: mapboxgl.MapOptions = {
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: mapStyle,
       minZoom: 3,
       maxZoom: 18,
       maxBounds: MAP_BOUNDS,
@@ -266,7 +273,13 @@ export function MapView({
       mapInstance.remove();
       map.current = null;
     };
-  }, [isWithinUSTerritory, getBlockedTerritoryMinZoom]);
+  }, [isWithinUSTerritory, getBlockedTerritoryMinZoom, themeMounted, mapStyle]);
+
+  // Update map style when theme changes
+  useEffect(() => {
+    if (!map.current || !mapLoaded) return;
+    map.current.setStyle(mapStyle);
+  }, [mapStyle, mapLoaded]);
 
   // Update center when location changes
   useEffect(() => {
@@ -459,7 +472,7 @@ export function MapView({
           {/* Location button */}
           <button
             onClick={handleLocate}
-            className="w-10 h-10 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-[#242429] transition-colors shadow-lg"
+            className="w-10 h-10 bg-surface border border-border rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors shadow-lg"
             aria-label="Go to my location"
             title="My location"
           >
@@ -471,7 +484,7 @@ export function MapView({
             <button
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="w-10 h-10 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-[#242429] transition-colors shadow-lg disabled:opacity-50"
+              className="w-10 h-10 bg-surface border border-border rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors shadow-lg disabled:opacity-50"
               aria-label="Refresh reports"
               title="Refresh reports"
             >
@@ -480,12 +493,12 @@ export function MapView({
           )}
 
           {/* Divider */}
-          <div className="w-6 h-px bg-[#2a2a30] mx-auto" />
+          <div className="w-6 h-px bg-border mx-auto" />
 
           {/* Zoom controls */}
           <button
             onClick={handleZoomIn}
-            className="w-10 h-10 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-[#242429] transition-colors shadow-lg"
+            className="w-10 h-10 bg-surface border border-border rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors shadow-lg"
             aria-label="Zoom in"
             title="Zoom in"
           >
@@ -494,7 +507,7 @@ export function MapView({
 
           <button
             onClick={handleZoomOut}
-            className="w-10 h-10 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-[#242429] transition-colors shadow-lg"
+            className="w-10 h-10 bg-surface border border-border rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors shadow-lg"
             aria-label="Zoom out"
             title="Zoom out"
           >
@@ -504,7 +517,7 @@ export function MapView({
           {/* Reset view button */}
           <button
             onClick={handleResetView}
-            className="w-10 h-10 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-[#242429] transition-colors shadow-lg"
+            className="w-10 h-10 bg-surface border border-border rounded-xl flex items-center justify-center text-foreground-secondary hover:text-foreground hover:bg-surface-hover transition-colors shadow-lg"
             aria-label="Reset to full US view"
             title="View all US"
           >

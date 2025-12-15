@@ -292,11 +292,12 @@ export default function ReportPage() {
     longitude: location.longitude,
     name: locationName || undefined
   } : null);
-  const isFormValid = selectedType && imageFile && (location || customLocation);
+  // Photo is optional - only activity type and location are required
+  const isFormValid = selectedType && (location || customLocation);
 
   // Handle form submission
   const handleSubmit = async () => {
-    if (!isFormValid || !effectiveLocation || !imageFile) return;
+    if (!isFormValid || !effectiveLocation) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -310,8 +311,10 @@ export default function ReportPage() {
         effectiveLocation.longitude
       );
 
-      // 2. Upload image to Supabase Storage
-      uploadedImageUrl = await uploadReportImage(imageFile);
+      // 2. Upload image to Supabase Storage (if provided)
+      if (imageFile) {
+        uploadedImageUrl = await uploadReportImage(imageFile);
+      }
 
       // 3. Create the report in the database
       await createReport({
@@ -321,7 +324,7 @@ export default function ReportPage() {
         region,
         activityType: selectedType,
         description: description || undefined,
-        imageUrl: uploadedImageUrl,
+        imageUrl: uploadedImageUrl || undefined,
       });
 
       // Success!
@@ -395,10 +398,10 @@ export default function ReportPage() {
       <main className="pt-16 px-4 max-w-lg mx-auto">
         {/* Info Card */}
         {showInfoCard && (
-          <Card className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10">
+          <Card className="mb-4 border-status-info/30 bg-status-info-muted">
             <CardContent className="pt-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-status-info/20 flex items-center justify-center flex-shrink-0">
                   <Lightbulb className="w-4 h-4 text-status-info" />
                 </div>
                 <p className="flex-1 text-sm text-foreground leading-relaxed pt-1">
@@ -561,9 +564,9 @@ export default function ReportPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Camera className="w-4 h-4 text-foreground-secondary" />
-              {t("report.photo")}
+              {t("report.photo")} <span className="text-foreground-muted font-normal text-sm">({t("report.photoOptionalLabel")})</span>
             </CardTitle>
-            <CardDescription>{t("report.photoRequired")}</CardDescription>
+            <CardDescription>{t("report.photoOptional")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {imagePreview ? (

@@ -1,9 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="112" fill="#0D0D0F"/>
-  <path d="M256 72 L408 128 L408 256 C408 352 340 424 256 456 C172 424 104 352 104 256 L104 128 Z" fill="none" stroke="#FF6B35" stroke-width="28" stroke-linejoin="round"/>
-  <circle cx="256" cy="240" r="48" fill="#FF6B35"/>
-  <circle cx="256" cy="240" r="80" fill="none" stroke="#FF6B35" stroke-width="12" opacity="0.5"/>
-  <circle cx="256" cy="240" r="112" fill="none" stroke="#FF6B35" stroke-width="8" opacity="0.25"/>
-  <rect x="244" y="208" width="24" height="48" rx="4" fill="#0D0D0F"/>
-  <circle cx="256" cy="276" r="12" fill="#0D0D0F"/>
+  <defs>
+    <radialGradient id="bgGradient" cx="30%" cy="30%" r="70%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16162a"/>
+      <stop offset="100%" stop-color="#0d0d14"/>
+    </radialGradient>
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dynamic dark background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGradient)"/>
+
+  <!-- Subtle glow behind circles -->
+  <circle cx="256" cy="256" r="160" fill="url(#glowGradient)"/>
+
+  <!-- Outer ping ring -->
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#FF6B35" stroke-width="6" opacity="0.2"/>
+
+  <!-- Middle ping ring -->
+  <circle cx="256" cy="256" r="100" fill="none" stroke="#FF6B35" stroke-width="10" opacity="0.4"/>
+
+  <!-- Inner ping ring -->
+  <circle cx="256" cy="256" r="60" fill="none" stroke="#FF6B35" stroke-width="14" opacity="0.7"/>
+
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="28" fill="#FF6B35"/>
 </svg>

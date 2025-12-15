@@ -46,6 +46,19 @@ function LanguageSwitcher() {
       >
         ES
       </button>
+      <button
+        onClick={() => handleLocaleChange("ht")}
+        className={cn(
+          "px-3 py-1 text-xs font-medium rounded-full transition-colors",
+          currentLocale === "ht"
+            ? "bg-accent-primary text-white"
+            : "text-foreground-muted hover:text-foreground"
+        )}
+        role="radio"
+        aria-checked={currentLocale === "ht"}
+      >
+        HT
+      </button>
     </div>
   );
 }

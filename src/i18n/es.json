@@ -53,6 +53,8 @@
     "description": "Descripcion (opcional)",
     "descriptionPlaceholder": "Proporciona detalles adicionales sobre lo que observaste...",
     "photo": "Evidencia Fotografica",
+    "photoOptionalLabel": "opcional",
+    "photoOptional": "Agregar una foto aumenta la credibilidad del reporte y ayuda a verificar la situacion",
     "photoRequired": "Se requiere una foto para verificar este reporte",
     "takePhoto": "Tomar Foto",
     "uploadPhoto": "Subir Foto",
@@ -68,7 +70,7 @@
     "successMessage": "Tu reporte esta pendiente de verificacion por un moderador",
     "error": "Error al enviar el reporte",
     "detectingLocation": "Detectando ubicacion...",
-    "disclaimer": "Los reportes requieren evidencia fotografica y verificacion de ubicacion. Los reportes falsos pueden resultar en acceso restringido."
+    "disclaimer": "Los reportes con fotos tienen puntuaciones de confianza mas altas. Los reportes falsos pueden resultar en acceso restringido."
   },
   "reportCard": {
     "verified": "Verificado",
@@ -205,9 +207,18 @@
   },
   "settings": {
     "title": "Configuracion",
+    "preferences": {
+      "title": "Preferencias"
+    },
     "language": {
       "title": "Idioma",
       "description": "Elige tu idioma preferido"
+    },
+    "theme": {
+      "title": "Apariencia",
+      "description": "Elige modo claro u oscuro",
+      "light": "Claro",
+      "dark": "Oscuro"
     },
     "notifications": {
       "title": "Notificaciones",
@@ -258,5 +269,211 @@
     "mapMarker": "Marcador de reporte para actividad de {type}",
     "confidenceIndicator": "Nivel de confianza {level}",
     "languageSelector": "Seleccionar idioma"
+  },
+  "legal": {
+    "title": "Recursos Legales",
+    "call": "Llamar",
+    "emergency": {
+      "title": "En una Emergencia",
+      "description": "Si usted o alguien que conoce esta siendo detenido, llame a una linea legal inmediatamente. Usted tiene derechos."
+    },
+    "sections": {
+      "hotlines": "Lineas de Emergencia",
+      "organizations": "Organizaciones Legales",
+      "resources": "Recursos Utiles"
+    },
+    "hotlines": {
+      "iceRaids": {
+        "name": "Linea United We Dream",
+        "description": "Apoyo inmediato para redadas de ICE y detenciones",
+        "available": "Disponible 24/7"
+      },
+      "nilc": {
+        "name": "Apoyo Legal NILC",
+        "description": "Preguntas legales de inmigracion y referencias",
+        "available": "Lun-Vie, 9am-5pm PT"
+      },
+      "aclu": {
+        "name": "ACLU Derechos de Inmigrantes",
+        "description": "Violaciones de derechos civiles y asistencia legal",
+        "available": "Lun-Vie, 9am-5pm ET"
+      }
+    },
+    "orgs": {
+      "nilc": "Defensa legal y recursos para inmigrantes de bajos ingresos",
+      "aila": "Encuentra un abogado de inmigracion calificado cerca de ti",
+      "uwd": "Red de defensa y apoyo para inmigrantes liderada por jovenes",
+      "ian": "Directorio de servicios legales de inmigracion gratuitos y de bajo costo"
+    },
+    "resources": {
+      "familyPlan": {
+        "title": "Plan de Preparacion Familiar",
+        "description": "Crea un plan para tu familia en caso de detencion"
+      },
+      "detentionGuide": {
+        "title": "Que Hacer si es Detenido",
+        "description": "Guia paso a paso para situaciones de detencion"
+      },
+      "powerOfAttorney": {
+        "title": "Poder Notarial",
+        "description": "Documentos legales para proteger a sus hijos y bienes"
+      }
+    },
+    "findLocal": {
+      "title": "Encuentra Ayuda Local",
+      "description": "Busca servicios legales de inmigracion gratuitos o de bajo costo en tu area.",
+      "button": "Buscar Directorio Legal"
+    },
+    "disclaimer": "Esta informacion es solo para propositos educativos y no es consejo legal. Consulte con un abogado calificado para su situacion especifica."
+  },
+  "pwa": {
+    "banner": {
+      "title": "Instalar MigrAlert",
+      "description": "Agrega a tu pantalla de inicio para acceso rapido",
+      "install": "Instalar",
+      "howTo": "Como Instalar",
+      "later": "Ahora No"
+    },
+    "ios": {
+      "title": "Agregar a Pantalla de Inicio",
+      "step1": "Toca el boton Compartir en Safari",
+      "step2": "Desplazate hacia abajo y toca",
+      "step3": "Toca \"Agregar\" en la esquina superior derecha",
+      "shareButton": "Compartir",
+      "addButton": "Agregar a Inicio",
+      "gotIt": "Entendido"
+    }
+  },
+  "onboarding": {
+    "skip": "Omitir",
+    "next": "Siguiente",
+    "back": "Atras",
+    "steps": {
+      "welcome": {
+        "title": "Bienvenido a MigrAlert",
+        "description": "Una red de seguridad impulsada por la comunidad disenada para mantenerte informado y protegido. Juntos, nos cuidamos unos a otros."
+      },
+      "reports": {
+        "title": "Reportes en Tiempo Real",
+        "description": "Ve y comparte reportes sobre actividad de inmigracion en tu area.",
+        "features": [
+          "Ve reportes en un mapa interactivo",
+          "Envia reportes para alertar a tu comunidad",
+          "Recibe notificaciones de actividad cercana"
+        ]
+      },
+      "alerts": {
+        "title": "Alertas de Emergencia",
+        "description": "Configura contactos de emergencia que seran notificados si necesitas ayuda.",
+        "features": [
+          "Agrega hasta 5 contactos de emergencia",
+          "Boton SOS de un toque para emergencias",
+          "Comparte tu ubicacion con contactos de confianza"
+        ]
+      },
+      "location": {
+        "title": "Habilitar Ubicacion",
+        "description": "El acceso a la ubicacion nos ayuda a mostrarte reportes relevantes cercanos y te permite enviar reportes precisos.",
+        "enableButton": "Habilitar Acceso a Ubicacion",
+        "requesting": "Solicitando acceso...",
+        "granted": "Acceso a ubicacion habilitado!",
+        "denied": "El acceso a la ubicacion fue denegado. Puedes habilitarlo despues en la configuracion de tu dispositivo.",
+        "continueAnyway": "Continuar sin ubicacion",
+        "later": "Quizas Despues"
+      },
+      "account": {
+        "title": "Crear una Cuenta",
+        "description": "Una cuenta te permite guardar contactos de emergencia, acceder a ellos desde cualquier dispositivo y conectarte con tu familia.",
+        "createButton": "Crear Cuenta",
+        "skipButton": "Continuar como Invitado"
+      }
+    }
+  },
+  "rights": {
+    "title": "Conoce Tus Derechos",
+    "selectScenario": "Selecciona una Situacion",
+    "whatToSay": "Que Decir",
+    "dos": "Hacer",
+    "donts": "No Hacer",
+    "card": {
+      "title": "Tus Derechos Constitucionales"
+    },
+    "core": [
+      "Tienes derecho a guardar silencio",
+      "Tienes derecho a rechazar una busqueda",
+      "Tienes derecho a hablar con un abogado",
+      "Tienes derecho a una audiencia ante un juez",
+      "No tienes que firmar nada que no entiendas"
+    ],
+    "scenarios": {
+      "street": {
+        "title": "En la Calle",
+        "say": "Estoy ejerciendo mi derecho a guardar silencio. No consiento a una busqueda.",
+        "dos": [
+          "Mantente calmado y manten tus manos visibles",
+          "Pregunta si eres libre de irte",
+          "Proporciona tu nombre si te lo piden (en algunos estados)",
+          "Memoriza numeros de placa y numeros de patrulla"
+        ],
+        "donts": [
+          "Correr o resistir, aunque creas que es injusto",
+          "Mentir o proporcionar documentos falsos",
+          "Responder preguntas sobre tu estatus migratorio"
+        ]
+      },
+      "home": {
+        "title": "En Casa",
+        "say": "No consiento a su entrada. Por favor deslice la orden bajo la puerta.",
+        "dos": [
+          "Pide ver una orden firmada por un juez",
+          "Manten la puerta cerrada - habla a traves de ella",
+          "Lee la orden cuidadosamente - verifica nombre y direccion",
+          "Ten un plan familiar listo"
+        ],
+        "donts": [
+          "Abrir la puerta a menos que tengan una orden judicial valida",
+          "Firmar documentos sin un abogado",
+          "Responder preguntas sin un abogado presente"
+        ]
+      },
+      "checkpoint": {
+        "title": "En Punto de Control",
+        "say": "Elijo guardar silencio. ¿Soy libre de irme?",
+        "dos": [
+          "Reduce la velocidad y detente en el punto de control",
+          "Manten tus manos en el volante",
+          "Proporciona licencia y registro si te lo piden",
+          "Mantente calmado y cortes"
+        ],
+        "donts": [
+          "Intentar dar la vuelta o evadir el punto de control",
+          "Responder preguntas sobre ciudadania o estatus migratorio",
+          "Consentir a una busqueda de tu vehiculo"
+        ]
+      },
+      "workplace": {
+        "title": "En el Trabajo",
+        "say": "Necesito hablar con mi empleador y un abogado antes de responder preguntas.",
+        "dos": [
+          "Mantente calmado y no corras",
+          "Pide ver la orden y que areas cubre",
+          "Contacta a tu representante sindical si tienes uno",
+          "Conoce tu informacion de contacto de emergencia"
+        ],
+        "donts": [
+          "Proporcionar documentos o informacion falsa",
+          "Responder preguntas sobre companeros de trabajo",
+          "Firmar nada sin leerlo y entenderlo"
+        ]
+      }
+    },
+    "remember": {
+      "title": "Recuerda",
+      "description": "Todo lo que digas puede ser usado en tu contra. Ejercer tus derechos no es una admision de culpa."
+    },
+    "needHelp": {
+      "title": "¿Necesitas Ayuda Legal?",
+      "description": "Encuentra recursos legales y lineas de emergencia"
+    }
   }
 }

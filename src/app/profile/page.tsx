@@ -24,9 +24,11 @@ import {
   Check,
   CheckCircle,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/hooks";
+import { useAuth, useTheme } from "@/hooks";
 import { useState } from "react";
 import { formatPhoneInput, formatPhoneDisplay, toE164, isValidUSPhone } from "@/lib/utils/phone";
 import { signInWithPhone, verifyPhoneOtp, removePhone } from "@/lib/supabase/auth";
@@ -34,6 +36,7 @@ import { signInWithPhone, verifyPhoneOtp, removePhone } from "@/lib/supabase/aut
 export default function ProfilePage() {
   const t = useTranslations();
   const { user, loading: authLoading, signOut, refreshUser } = useAuth();
+  const { theme, setTheme, mounted: themeMounted } = useTheme();
   const [signingOut, setSigningOut] = useState(false);
 
   // Phone verification state
@@ -133,13 +136,19 @@ export default function ProfilePage() {
 
   const settingsGroups = [
     {
-      title: t("settings.language.title"),
+      title: t("settings.preferences.title"),
       items: [
         {
           icon: Globe,
           label: t("settings.language.title"),
           description: t("settings.language.description"),
           action: "language",
+        },
+        {
+          icon: theme === "dark" ? Moon : Sun,
+          label: t("settings.theme.title"),
+          description: t("settings.theme.description"),
+          action: "theme",
         },
       ],
     },
@@ -160,14 +169,16 @@ export default function ProfilePage() {
         {
           icon: Scale,
           label: t("settings.about.legal"),
-          description: "Legal assistance resources",
+          description: t("legal.findLocal.description"),
           action: "link",
+          href: "/legal",
         },
         {
           icon: FileText,
           label: t("settings.about.rights"),
-          description: "Your rights during an encounter",
+          description: t("rights.remember.description"),
           action: "link",
+          href: "/rights",
         },
         {
           icon: Info,
@@ -414,17 +425,16 @@ export default function ProfilePage() {
             <Card>
               <CardContent className="p-0">
                 {group.items.map((item, itemIndex) => {
-                  // Use div for items with nested interactive elements, button otherwise
-                  const isInteractive = item.action === "language" || item.action === "toggle";
-                  const Component = isInteractive ? "div" : "button";
+                  // Use div for items with nested interactive elements, Link for hrefs, button otherwise
+                  const isInteractive = item.action === "language" || item.action === "toggle" || item.action === "theme";
+                  const hasHref = "href" in item && item.href;
 
-                  return (
-                    <Component
-                      key={itemIndex}
-                      className={`w-full flex items-center gap-3 p-4 transition-colors text-left border-b border-border last:border-0 ${
-                        isInteractive ? "" : "hover:bg-surface-hover cursor-pointer"
-                      }`}
-                    >
+                  const className = `w-full flex items-center gap-3 p-4 transition-colors text-left border-b border-border last:border-0 ${
+                    isInteractive ? "" : "hover:bg-surface-hover cursor-pointer"
+                  }`;
+
+                  const content = (
+                    <>
                       <div className="w-9 h-9 rounded-[var(--radius-md)] bg-surface-hover flex items-center justify-center">
                         <item.icon className="w-5 h-5 text-foreground-secondary" />
                       </div>
@@ -435,6 +445,36 @@ export default function ProfilePage() {
                         </p>
                       </div>
                       {item.action === "language" && <LanguageSwitcher />}
+                      {item.action === "theme" && themeMounted && (
+                        <div className="inline-flex rounded-full bg-surface-hover p-1">
+                          <button
+                            type="button"
+                            onClick={() => setTheme("light")}
+                            className={`px-3 py-1 text-xs font-medium rounded-full transition-colors flex items-center gap-1.5 ${
+                              theme === "light"
+                                ? "bg-accent-primary text-white"
+                                : "text-foreground-muted hover:text-foreground"
+                            }`}
+                            aria-label={t("settings.theme.light")}
+                          >
+                            <Sun className="w-3.5 h-3.5" />
+                            {t("settings.theme.light")}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setTheme("dark")}
+                            className={`px-3 py-1 text-xs font-medium rounded-full transition-colors flex items-center gap-1.5 ${
+                              theme === "dark"
+                                ? "bg-accent-primary text-white"
+                                : "text-foreground-muted hover:text-foreground"
+                            }`}
+                            aria-label={t("settings.theme.dark")}
+                          >
+                            <Moon className="w-3.5 h-3.5" />
+                            {t("settings.theme.dark")}
+                          </button>
+                        </div>
+                      )}
                       {item.action === "toggle" && (
                         <button
                           type="button"
@@ -447,6 +487,22 @@ export default function ProfilePage() {
                       {item.action === "link" && (
                         <ChevronRight className="w-5 h-5 text-foreground-muted" />
                       )}
+                    </>
+                  );
+
+                  // Render as Link if href exists, otherwise div or button
+                  if (hasHref) {
+                    return (
+                      <Link key={itemIndex} href={item.href as string} className={className}>
+                        {content}
+                      </Link>
+                    );
+                  }
+
+                  const Component = isInteractive ? "div" : "button";
+                  return (
+                    <Component key={itemIndex} className={className}>
+                      {content}
                     </Component>
                   );
                 })}

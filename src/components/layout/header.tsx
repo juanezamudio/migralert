@@ -41,7 +41,7 @@ function Header({
               className={cn(
                 "text-lg font-semibold font-display tracking-tight truncate",
                 transparent
-                  ? "inline-block px-4 py-1.5 rounded-full bg-[#1a1a1f]/90 backdrop-blur-md border border-[#2a2a30] text-foreground shadow-lg"
+                  ? "inline-block px-4 py-1.5 rounded-full bg-surface/90 backdrop-blur-md border border-border text-foreground shadow-lg"
                   : "text-foreground"
               )}
             >
@@ -58,7 +58,7 @@ function Header({
               className={cn(
                 "text-2xl font-bold font-display tracking-tight",
                 transparent
-                  ? "inline-block px-6 py-2.5 rounded-full bg-[#1a1a1f]/90 backdrop-blur-md border border-[#2a2a30] text-accent-primary shadow-lg"
+                  ? "inline-block px-6 py-2.5 rounded-full bg-surface/90 backdrop-blur-md border border-border text-accent-primary shadow-lg"
                   : "text-accent-primary"
               )}
             >

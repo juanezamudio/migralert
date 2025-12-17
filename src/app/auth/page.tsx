@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PhoneDigitInput, OtpInput } from "@/components/ui/digit-input";
 import { ArrowLeft, Shield, Users, Bell, Loader2, CheckCircle, Mail, Phone, AtSign } from "lucide-react";
 import { Toast } from "@/components/ui/toast";
 import Link from "next/link";
@@ -11,7 +12,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { formatPhoneInput, toE164, isValidUSPhone } from "@/lib/utils/phone";
+import { toE164 } from "@/lib/utils/phone";
 
 export default function AuthPage() {
   const t = useTranslations();
@@ -127,16 +128,16 @@ export default function AuthPage() {
     e.preventDefault();
     setError(null);
 
-    // Validate phone number
-    if (!isValidUSPhone(phone)) {
+    // Validate phone number (must be exactly 10 digits)
+    if (phone.length !== 10) {
       setError(t("auth.invalidPhone"));
       return;
     }
 
     setLoading(true);
 
-    // Convert to E.164 format for Supabase
-    const e164Phone = toE164(phone);
+    // Convert to E.164 format for Supabase (phone is already raw digits)
+    const e164Phone = `+1${phone}`;
     const result = await signInWithPhone(e164Phone);
 
     if (result.error) {
@@ -155,8 +156,8 @@ export default function AuthPage() {
     setError(null);
     setLoading(true);
 
-    // Use E.164 format for verification
-    const e164Phone = toE164(phone);
+    // Use E.164 format for verification (phone is already raw digits)
+    const e164Phone = `+1${phone}`;
     const result = await verifyPhoneOtp(e164Phone, otp);
 
     if (result.error) {
@@ -358,17 +359,14 @@ export default function AuthPage() {
             </div>
           )}
 
-          <form className="space-y-4" onSubmit={handleVerifyOtp}>
-            <Input
+          <form className="space-y-6" onSubmit={handleVerifyOtp}>
+            <OtpInput
               label={t("auth.verificationCode")}
-              type="text"
-              inputMode="numeric"
-              placeholder="123456"
-              autoComplete="one-time-code"
               value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              required
-              maxLength={6}
+              onChange={setOtp}
+              error={!!error}
+              disabled={loading}
+              autoFocus
             />
 
             <Button className="w-full" size="lg" type="submit" disabled={loading || otp.length < 6}>
@@ -388,7 +386,7 @@ export default function AuthPage() {
               onClick={async () => {
                 setError(null);
                 setLoading(true);
-                const e164Phone = toE164(phone);
+                const e164Phone = `+1${phone}`;
                 const result = await signInWithPhone(e164Phone);
                 setLoading(false);
                 if (result.error) {
@@ -524,15 +522,16 @@ export default function AuthPage() {
 
           {/* Phone input (for phone login/signup) */}
           {authMethod === "phone" && mode !== "forgot" && (
-            <Input
-              label={t("auth.phone")}
-              type="tel"
-              placeholder="(555) 123-4567"
-              autoComplete="tel"
-              value={phone}
-              onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
-              required
-            />
+            <div className="mb-6">
+              <PhoneDigitInput
+                label={t("auth.phone")}
+                value={phone}
+                onChange={setPhone}
+                error={!!error}
+                disabled={loading}
+                autoFocus
+              />
+            </div>
           )}
 
           {/* Password fields (only for email auth, not phone) */}
@@ -576,7 +575,12 @@ export default function AuthPage() {
             </button>
           )}
 
-          <Button className="w-full" size="lg" type="submit" disabled={loading}>
+          <Button
+            className="w-full"
+            size="lg"
+            type="submit"
+            disabled={loading || (authMethod === "phone" && phone.length < 10)}
+          >
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />

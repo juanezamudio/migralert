@@ -475,5 +475,37 @@
       "title": "Bezwen Èd Legal?",
       "description": "Jwenn resous legal ak liy ijans"
     }
+  },
+  "feedback": {
+    "title": "Voye Kòmantè",
+    "subtitle": "Ede nou amelyore MigrAlert ak sijesyon ou yo",
+    "category": "Ki kalite kòmantè?",
+    "categories": {
+      "bug": "Rapòte Erè",
+      "feature": "Nouvo Fonksyon",
+      "improvement": "Amelyorasyon",
+      "other": "Lòt"
+    },
+    "titleLabel": "Tit",
+    "titlePlaceholder": "Dekri kòmantè ou rapidman",
+    "descriptionLabel": "Detay (opsyonèl)",
+    "descriptionPlaceholder": "Bay plis kontèks oswa etap pou repwodui...",
+    "emailLabel": "Imèl (opsyonèl)",
+    "emailPlaceholder": "ou@imèl.com",
+    "emailNote": "Sèlman si ou ta renmen nou kontakte ou",
+    "submit": "Voye",
+    "submitting": "Ap voye...",
+    "success": {
+      "title": "Mèsi!",
+      "message": "Nou resevwa kòmantè ou. Nou apresye èd ou pou amelyore MigrAlert."
+    },
+    "button": "Voye Kòmantè"
+  },
+  "support": {
+    "title": "Sipòte MigrAlert",
+    "description": "Ede nou kenbe aplikasyon sa a gratis pou kominote a",
+    "oneTime": "Don yon sèl fwa",
+    "monthly": "Patwonaj chak mwa",
+    "transparent": "Don transparan"
   }
 }

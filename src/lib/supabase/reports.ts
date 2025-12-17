@@ -9,7 +9,7 @@ interface ReportRow {
   region: string;
   activity_type: ActivityType;
   description: string | null;
-  image_url: string;
+  image_url: string | null;
   status: ReportStatus;
   confidence_score: number;
   created_at: string;
@@ -29,7 +29,7 @@ function transformReport(row: ReportRow): Report {
     region: row.region,
     activityType: row.activity_type,
     description: row.description || undefined,
-    imageUrl: row.image_url,
+    imageUrl: row.image_url || undefined,
     status: row.status,
     confidenceScore: row.confidence_score,
     createdAt: row.created_at,
@@ -103,7 +103,7 @@ export async function getActiveReports(): Promise<Report[]> {
     region: row.region,
     activityType: row.activity_type,
     description: row.description || undefined,
-    imageUrl: row.image_url,
+    imageUrl: row.image_url || undefined,
     status: row.status,
     confidenceScore: row.confidence_score,
     createdAt: row.created_at,
@@ -139,7 +139,7 @@ export async function getReportById(id: string): Promise<Report | null> {
     region: data.region,
     activityType: data.activity_type,
     description: data.description || undefined,
-    imageUrl: data.image_url,
+    imageUrl: data.image_url || undefined,
     status: data.status,
     confidenceScore: data.confidence_score,
     createdAt: data.created_at,
@@ -199,7 +199,7 @@ export async function createReport(input: CreateReportInput): Promise<Report> {
     region: data.region,
     activityType: data.activity_type,
     description: data.description || undefined,
-    imageUrl: data.image_url,
+    imageUrl: data.image_url || undefined,
     status: data.status,
     confidenceScore: data.confidence_score,
     createdAt: data.created_at,

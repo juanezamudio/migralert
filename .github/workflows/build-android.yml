@@ -1,0 +1,116 @@
+name: Build & Deploy Android
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Fastlane lane to run'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+          - beta
+          - release
+          - build_apk
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: android
+
+      - name: Install Fastlane
+        run: |
+          gem install bundler
+          bundle install
+        working-directory: android
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
+
+      - name: Build APK (for testing)
+        if: github.event.inputs.lane == 'build_apk'
+        run: bundle exec fastlane build_apk
+        working-directory: android
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/app/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Build and Deploy to Internal Testing
+        if: github.event.inputs.lane == 'beta' || github.event_name == 'push'
+        run: bundle exec fastlane beta
+        working-directory: android
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/app/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+
+      - name: Build and Deploy to Production
+        if: github.event.inputs.lane == 'release'
+        run: bundle exec fastlane release
+        working-directory: android
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/app/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+
+      - name: Upload APK artifact
+        if: github.event.inputs.lane == 'build_apk'
+        uses: actions/upload-artifact@v4
+        with:
+          name: MigrAlert-Android-APK
+          path: android/app/build/outputs/apk/release/*.apk
+          retention-days: 14
+
+      - name: Upload AAB artifact
+        if: github.event.inputs.lane != 'build_apk'
+        uses: actions/upload-artifact@v4
+        with:
+          name: MigrAlert-Android-AAB
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 14

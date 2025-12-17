@@ -26,12 +26,16 @@ import {
   X,
   Sun,
   Moon,
+  MessageSquarePlus,
+  Heart,
+  ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth, useTheme } from "@/hooks";
 import { useState } from "react";
 import { formatPhoneInput, formatPhoneDisplay, toE164, isValidUSPhone } from "@/lib/utils/phone";
 import { signInWithPhone, verifyPhoneOtp, removePhone } from "@/lib/supabase/auth";
+import { FeedbackModal } from "@/components/feedback/feedback-modal";
 
 export default function ProfilePage() {
   const t = useTranslations();
@@ -50,6 +54,7 @@ export default function ProfilePage() {
   const [deleteMode, setDeleteMode] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -179,6 +184,12 @@ export default function ProfilePage() {
           description: t("rights.remember.description"),
           action: "link",
           href: "/rights",
+        },
+        {
+          icon: MessageSquarePlus,
+          label: t("feedback.title"),
+          description: t("feedback.subtitle"),
+          action: "feedback",
         },
         {
           icon: Info,
@@ -428,6 +439,7 @@ export default function ProfilePage() {
                   // Use div for items with nested interactive elements, Link for hrefs, button otherwise
                   const isInteractive = item.action === "language" || item.action === "toggle" || item.action === "theme";
                   const hasHref = "href" in item && item.href;
+                  const isFeedback = item.action === "feedback";
 
                   const className = `w-full flex items-center gap-3 p-4 transition-colors text-left border-b border-border last:border-0 ${
                     isInteractive ? "" : "hover:bg-surface-hover cursor-pointer"
@@ -484,7 +496,7 @@ export default function ProfilePage() {
                           <div className="w-5 h-5 bg-foreground-muted rounded-full absolute left-0.5 top-0.5 transition-transform" />
                         </button>
                       )}
-                      {item.action === "link" && (
+                      {(item.action === "link" || item.action === "feedback") && (
                         <ChevronRight className="w-5 h-5 text-foreground-muted" />
                       )}
                     </>
@@ -496,6 +508,14 @@ export default function ProfilePage() {
                       <Link key={itemIndex} href={item.href as string} className={className}>
                         {content}
                       </Link>
+                    );
+                  }
+
+                  if (isFeedback) {
+                    return (
+                      <button key={itemIndex} className={className} onClick={() => setShowFeedbackModal(true)}>
+                        {content}
+                      </button>
                     );
                   }
 
@@ -527,6 +547,76 @@ export default function ProfilePage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Support MigrAlert */}
+        <Card className="mb-6 border-accent-primary/20 bg-gradient-to-br from-accent-primary/5 to-transparent">
+          <CardContent className="pt-4">
+            <div className="flex gap-3 mb-4">
+              <Heart className="w-5 h-5 text-accent-primary flex-shrink-0" />
+              <div>
+                <h3 className="font-medium text-foreground mb-1">
+                  {t("support.title")}
+                </h3>
+                <p className="text-sm text-foreground-secondary">
+                  {t("support.description")}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a
+                href="https://buymeacoffee.com/migralert"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3 rounded-[var(--radius-md)] bg-surface hover:bg-surface-hover border border-border transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#FFDD00]/10 flex items-center justify-center">
+                    <span className="text-lg">☕</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Buy Me a Coffee</p>
+                    <p className="text-xs text-foreground-secondary">{t("support.oneTime")}</p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-foreground-muted" />
+              </a>
+              <a
+                href="https://ko-fi.com/migralert"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3 rounded-[var(--radius-md)] bg-surface hover:bg-surface-hover border border-border transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#FF5E5B]/10 flex items-center justify-center">
+                    <span className="text-lg">💜</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Ko-fi</p>
+                    <p className="text-xs text-foreground-secondary">{t("support.monthly")}</p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-foreground-muted" />
+              </a>
+              <a
+                href="https://opencollective.com/migralert"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3 rounded-[var(--radius-md)] bg-surface hover:bg-surface-hover border border-border transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#7FADF2]/10 flex items-center justify-center">
+                    <span className="text-lg">🌐</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Open Collective</p>
+                    <p className="text-xs text-foreground-secondary">{t("support.transparent")}</p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-foreground-muted" />
+              </a>
+            </div>
+          </CardContent>
+        </Card>
       </main>
 
       {/* Bottom navigation */}
@@ -539,6 +629,12 @@ export default function ProfilePage() {
           onClick={() => setDeleteMode(false)}
         />
       )}
+
+      {/* Feedback Modal */}
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+      />
 
       {/* Delete Phone Confirmation Modal */}
       {showDeleteModal && (

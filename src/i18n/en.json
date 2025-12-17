@@ -475,5 +475,37 @@
       "title": "Need Legal Help?",
       "description": "Find legal resources and emergency hotlines"
     }
+  },
+  "feedback": {
+    "title": "Send Feedback",
+    "subtitle": "Help us improve MigrAlert with your suggestions",
+    "category": "What type of feedback?",
+    "categories": {
+      "bug": "Bug Report",
+      "feature": "Feature Request",
+      "improvement": "Improvement",
+      "other": "Other"
+    },
+    "titleLabel": "Title",
+    "titlePlaceholder": "Briefly describe your feedback",
+    "descriptionLabel": "Details (optional)",
+    "descriptionPlaceholder": "Provide more context or steps to reproduce...",
+    "emailLabel": "Email (optional)",
+    "emailPlaceholder": "your@email.com",
+    "emailNote": "Only if you'd like us to follow up with you",
+    "submit": "Send Feedback",
+    "submitting": "Sending...",
+    "success": {
+      "title": "Thank You!",
+      "message": "Your feedback has been received. We appreciate your help improving MigrAlert."
+    },
+    "button": "Send Feedback"
+  },
+  "support": {
+    "title": "Support MigrAlert",
+    "description": "Help us keep this app free for the community",
+    "oneTime": "One-time donation",
+    "monthly": "Monthly sponsorship",
+    "transparent": "Transparent donations"
   }
 }

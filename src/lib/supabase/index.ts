@@ -49,5 +49,13 @@ export {
   type CreateContactInput,
 } from "./emergency-contacts";
 
+// Feedback (client-side)
+export {
+  submitFeedback,
+  getFeedback,
+  type FeedbackCategory,
+  type SubmitFeedbackInput,
+} from "./feedback";
+
 // Note: Server-side functions (createServerClient, createServiceClient)
 // should be imported directly from "./server" in server components only

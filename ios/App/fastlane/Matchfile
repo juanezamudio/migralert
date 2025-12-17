@@ -1,0 +1,8 @@
+# Match configuration for code signing
+# This uses a private git repo to store certificates/profiles
+
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+type("appstore")
+app_identifier(["com.migralert.app"])
+username(ENV["APPLE_ID"])

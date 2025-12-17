@@ -72,7 +72,7 @@ export default function LegalResourcesPage() {
     {
       title: t("legal.resources.familyPlan.title"),
       description: t("legal.resources.familyPlan.description"),
-      url: "https://www.nilc.org/get-involved/community-education-resources/family-preparedness-plan/",
+      url: "https://www.ilrc.org/resources/step-step-family-preparedness-plan",
     },
     {
       title: t("legal.resources.detentionGuide.title"),
@@ -82,7 +82,7 @@ export default function LegalResourcesPage() {
     {
       title: t("legal.resources.powerOfAttorney.title"),
       description: t("legal.resources.powerOfAttorney.description"),
-      url: "https://www.ilrc.org/power-attorney",
+      url: "https://www.informedimmigrant.com/resources/detention-deportation/steps-take-prepare-family/",
     },
   ];
 

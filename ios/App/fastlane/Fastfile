@@ -1,0 +1,73 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Load App Store Connect API Key"
+  lane :load_asc_api_key do
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY_CONTENT"],
+      is_key_content_base64: true,
+      in_house: false
+    )
+  end
+
+  desc "Install certificates and provisioning profiles"
+  lane :prepare_signing do
+    api_key = load_asc_api_key
+
+    match(
+      type: "appstore",
+      app_identifier: "com.migralert.app",
+      readonly: is_ci,
+      api_key: api_key
+    )
+  end
+
+  desc "Build the iOS app"
+  lane :build do
+    prepare_signing
+
+    build_app(
+      workspace: "App.xcworkspace",
+      scheme: "App",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "MigrAlert.ipa"
+    )
+  end
+
+  desc "Upload to TestFlight"
+  lane :beta do
+    build
+
+    api_key = load_asc_api_key
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Deploy to App Store"
+  lane :release do
+    build
+
+    api_key = load_asc_api_key
+
+    upload_to_app_store(
+      api_key: api_key,
+      skip_screenshots: true,
+      skip_metadata: false,
+      precheck_include_in_app_purchases: false,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+
+  desc "Increment build number"
+  lane :increment_build do
+    increment_build_number(xcodeproj: "App.xcodeproj")
+  end
+end

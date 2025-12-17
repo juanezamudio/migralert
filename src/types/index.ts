@@ -15,7 +15,7 @@ export interface Report {
   region: string;
   activityType: ActivityType;
   description?: string;
-  imageUrl: string;
+  imageUrl?: string;
   status: ReportStatus;
   confidenceScore: number;
   reporterId?: string;

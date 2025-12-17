@@ -475,5 +475,37 @@
       "title": "¿Necesitas Ayuda Legal?",
       "description": "Encuentra recursos legales y lineas de emergencia"
     }
+  },
+  "feedback": {
+    "title": "Enviar Comentarios",
+    "subtitle": "Ayúdanos a mejorar MigrAlert con tus sugerencias",
+    "category": "¿Qué tipo de comentario?",
+    "categories": {
+      "bug": "Reportar Error",
+      "feature": "Nueva Función",
+      "improvement": "Mejora",
+      "other": "Otro"
+    },
+    "titleLabel": "Título",
+    "titlePlaceholder": "Describe brevemente tu comentario",
+    "descriptionLabel": "Detalles (opcional)",
+    "descriptionPlaceholder": "Proporciona más contexto o pasos para reproducir...",
+    "emailLabel": "Correo (opcional)",
+    "emailPlaceholder": "tu@correo.com",
+    "emailNote": "Solo si deseas que te contactemos",
+    "submit": "Enviar",
+    "submitting": "Enviando...",
+    "success": {
+      "title": "¡Gracias!",
+      "message": "Hemos recibido tus comentarios. Agradecemos tu ayuda para mejorar MigrAlert."
+    },
+    "button": "Enviar Comentarios"
+  },
+  "support": {
+    "title": "Apoya a MigrAlert",
+    "description": "Ayúdanos a mantener esta app gratuita para la comunidad",
+    "oneTime": "Donación única",
+    "monthly": "Patrocinio mensual",
+    "transparent": "Donaciones transparentes"
   }
 }
